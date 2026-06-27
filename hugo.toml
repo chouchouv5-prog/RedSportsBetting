@@ -1,4 +1,4 @@
-baseURL = 'https://example.org/'
-locale = 'en-us'
-title = 'My New Hugo Project'
+baseURL = 'https://redsportsbetting.pages.dev/'
+languageCode = 'en-us'
+title = 'RSB1 - Virtual Sports Betting'
 theme = 'ananke'
