@@ -1,12 +1,9 @@
 <header style="background: #000; color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center;">
     <h1 style="margin: 0;"><a href="/" style="color: white; text-decoration: none;">VSB1 - Virtual Sports Betting</a></h1>
     
-    <div id="user-info" style="display: none; align-items: center; gap: 15px;">
-        <span id="username-display" style="font-weight: bold;"></span>
-        <span id="coins-display" style="color: gold; font-weight: bold; background: #333; padding: 5px 12px; border-radius: 20px;"></span>
+    <div>
+        <button onclick="showAuthModal()" id="auth-button" style="padding: 8px 16px;">Sign Up / Login</button>
     </div>
-
-    <button onclick="showAuthModal()" id="auth-button" style="padding: 8px 16px;">Sign Up / Login</button>
 </header>
 
 <!-- Modal -->
@@ -22,20 +19,31 @@
 </div>
 
 <script>
-async function loadUser() {
-    const { data: { user } } = await supabaseClient.auth.getUser();
-    if (user) {
-        document.getElementById('auth-button').style.display = 'none';
-        document.getElementById('user-info').style.display = 'flex';
-        document.getElementById('username-display').textContent = user.email.split('@')[0];
-        
-        // Load coins
-        const { data } = await supabaseClient.from('profiles').select('vsb_coins').eq('email', user.email).single();
-        if (data) {
-            document.getElementById('coins-display').textContent = data.vsb_coins + ' Coins';
-        }
+async function signUp() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const { data, error } = await supabaseClient.auth.signUp({ email, password });
+    if (error) alert(error.message);
+    else alert("Check your email to confirm!");
+    closeModal();
+}
+
+async function signIn() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+    if (error) alert(error.message);
+    else {
+        alert("Login successful!");
+        location.reload();
     }
 }
 
-loadUser();
+function showAuthModal() {
+    document.getElementById('auth-modal').style.display = 'flex';
+}
+
+function closeModal() {
+    document.getElementById('auth-modal').style.display = 'none';
+}
 </script>
