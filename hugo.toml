@@ -3,7 +3,7 @@ languageCode = 'fr-fr'
 title = 'VSB1 - Virtual Sports Betting'
 theme = 'ananke'
 
-[menu.main]
+[[menu.main]]
   name = "Accueil"
   url = "/"
   weight = 1
