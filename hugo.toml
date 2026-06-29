@@ -1,24 +1,24 @@
 baseURL = 'https://redsportsbetting.pages.dev/'
-languageCode = 'fr-fr'
+languageCode = 'en-us'
 title = 'VSB1 - Virtual Sports Betting'
 theme = 'ananke'
 
 [[menu.main]]
-  name = "Accueil"
+  name = "Home"
   url = "/"
   weight = 1
 
 [[menu.main]]
-  name = "Matchs"
-  url = "/matchs/"
+  name = "Matches"
+  url = "/matches/"
   weight = 2
 
 [[menu.main]]
-  name = "Classement"
-  url = "/classement/"
+  name = "Leaderboard"
+  url = "/leaderboard/"
   weight = 3
 
 [[menu.main]]
-  name = "À propos"
+  name = "About"
   url = "/about/"
   weight = 4

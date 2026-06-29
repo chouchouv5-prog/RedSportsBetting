@@ -4,10 +4,10 @@ date: 2026-07-05
 draft: false
 ---
 
-**Match virtuel du jour**
+**Virtual Match of the Day**
 
-- **Date** : 5 juillet 2026
-- **Heure** : 20h00
-- **Cote virtuelle** : Arsenal 2.10 | Match nul 3.40 | Man City 3.20
+- **Date**: July 5, 2026
+- **Time**: 20:00
+- **Virtual Odds**: Arsenal 2.10 | Draw 3.40 | Man City 3.20
 
-Place tes paris avec tes **VSB Coins** !
+Place your bets with your **VSB Coins**!
