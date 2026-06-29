@@ -22,3 +22,8 @@ theme = 'ananke'
   name = "About"
   url = "/about/"
   weight = 4
+
+[[menu.main]]
+  name = "Profile"
+  url = "/profile/"
+  weight = 5
