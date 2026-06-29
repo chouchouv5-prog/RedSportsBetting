@@ -1,17 +1,24 @@
-[menu]
-  [[menu.main]]
-    name = "Accueil"
-    url = "/"
-    weight = 1
-  [[menu.main]]
-    name = "Matchs"
-    url = "/matchs/"
-    weight = 2
-  [[menu.main]]
-    name = "Classement"
-    url = "/classement/"
-    weight = 3
-  [[menu.main]]
-    name = "À propos"
-    url = "/about/"
-    weight = 4
+baseURL = 'https://redsportsbetting.pages.dev/'
+languageCode = 'fr-fr'
+title = 'VSB1 - Virtual Sports Betting'
+theme = 'ananke'
+
+[menu.main]
+  name = "Accueil"
+  url = "/"
+  weight = 1
+
+[[menu.main]]
+  name = "Matchs"
+  url = "/matchs/"
+  weight = 2
+
+[[menu.main]]
+  name = "Classement"
+  url = "/classement/"
+  weight = 3
+
+[[menu.main]]
+  name = "À propos"
+  url = "/about/"
+  weight = 4
