@@ -6,36 +6,33 @@ draft: false
 
 # My Profile
 
-Welcome back!
-
 <div id="profile-content">
-    Loading...
+    Loading your profile...
 </div>
 
 <script>
 async function loadProfile() {
     const { data: { user } } = await supabaseClient.auth.getUser();
     if (!user) {
-        window.location.href = "/";
+        document.getElementById('profile-content').innerHTML = `<p>Please <a href="/">login</a> first.</p>`;
         return;
     }
 
     const { data: profile } = await supabaseClient
         .from('profiles')
-        .select('*')
+        .select('vsb_coins')
         .eq('email', user.email)
         .single();
 
     document.getElementById('profile-content').innerHTML = `
         <p><strong>Email:</strong> ${user.email}</p>
-        <p><strong>VSB Coins:</strong> <span style="color: gold; font-size: 1.5em;">${profile ? profile.vsb_coins : 1000}</span></p>
-        <button onclick="logout()" style="padding: 10px 20px; background: red; color: white;">Logout</button>
+        <p><strong>VSB Coins:</strong> <span style="color: gold; font-size: 1.8em;">${profile ? profile.vsb_coins : 1000}</span></p>
+        <button onclick="logout()" style="padding: 12px 24px; background: #ff4444; color: white; border: none; border-radius: 5px; cursor: pointer;">Logout</button>
     `;
 }
 
 function logout() {
-    supabaseClient.auth.signOut();
-    location.reload();
+    supabaseClient.auth.signOut().then(() => location.href = "/");
 }
 
 loadProfile();
