@@ -17,4 +17,28 @@
         {{ block "main" . }}{{ end }}
     </main>
 </body>
+<script>
+async function updateHeader() {
+    const userSection = document.getElementById('user-section');
+    if (!userSection) return;
+
+    const { data: { user } } = await supabaseClient.auth.getUser();
+
+    if (user) {
+        userSection.innerHTML = `
+            <span style="color: gold;">${user.email.split('@')[0]}</span>
+            <a href="/profile/" style="color: white; margin: 0 15px;">Profile</a>
+            <button onclick="logout()" style="padding: 8px 16px; background: #ff4444; color: white;">Logout</button>
+        `;
+    } else {
+        userSection.innerHTML = `<button onclick="showAuthModal()" style="padding: 8px 16px;">Sign Up / Login</button>`;
+    }
+}
+
+function logout() {
+    supabaseClient.auth.signOut().then(() => location.reload());
+}
+
+updateHeader();
+</script>
 </html>
