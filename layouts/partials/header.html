@@ -1,49 +1,30 @@
 <header style="background: #000; color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center;">
     <h1 style="margin: 0;"><a href="/" style="color: white; text-decoration: none;">VSB1 - Virtual Sports Betting</a></h1>
     
-    <div>
-        <button onclick="showAuthModal()" id="auth-button" style="padding: 8px 16px;">Sign Up / Login</button>
+    <div id="user-section" style="display: flex; align-items: center; gap: 15px;">
+        <!-- Sera rempli par JavaScript -->
     </div>
 </header>
 
-<!-- Modal -->
-<div id="auth-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center;">
-    <div style="background: white; color: black; padding: 30px; border-radius: 10px; width: 350px;">
-        <h2>Sign Up / Login</h2>
-        <input id="email" type="email" placeholder="Email" style="width: 100%; padding: 10px; margin: 10px 0;"><br>
-        <input id="password" type="password" placeholder="Password" style="width: 100%; padding: 10px; margin: 10px 0;"><br>
-        <button onclick="signUp()" style="width: 100%; margin: 5px 0; padding: 10px;">Sign Up</button>
-        <button onclick="signIn()" style="width: 100%; margin: 5px 0; padding: 10px;">Login</button>
-        <button onclick="closeModal()" style="width: 100%; margin-top: 10px; background: gray; padding: 10px;">Close</button>
-    </div>
-</div>
+<!-- Modal reste le même que précédemment -->
 
-<script>
-async function signUp() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const { data, error } = await supabaseClient.auth.signUp({ email, password });
-    if (error) alert(error.message);
-    else alert("Check your email to confirm!");
-    closeModal();
-}
+async function updateHeader() {
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    const userSection = document.getElementById('user-section');
 
-async function signIn() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-    if (error) alert(error.message);
-    else {
-        alert("Login successful!");
-        location.reload();
+    if (user) {
+        userSection.innerHTML = `
+            <span style="color: gold;">${user.email.split('@')[0]}</span>
+            <a href="/profile/" style="color: white; margin: 0 15px;">Profile</a>
+            <button onclick="logout()" style="padding: 8px 16px; background: #ff4444;">Logout</button>
+        `;
+    } else {
+        userSection.innerHTML = `<button onclick="showAuthModal()" style="padding: 8px 16px;">Sign Up / Login</button>`;
     }
 }
 
-function showAuthModal() {
-    document.getElementById('auth-modal').style.display = 'flex';
+function logout() {
+    supabaseClient.auth.signOut().then(() => location.reload());
 }
 
-function closeModal() {
-    document.getElementById('auth-modal').style.display = 'none';
-}
-</script>
+updateHeader();
