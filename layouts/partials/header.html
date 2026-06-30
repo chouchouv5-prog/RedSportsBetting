@@ -8,23 +8,3 @@
 
 <!-- Modal reste le même que précédemment -->
 
-async function updateHeader() {
-    const { data: { user } } = await supabaseClient.auth.getUser();
-    const userSection = document.getElementById('user-section');
-
-    if (user) {
-        userSection.innerHTML = `
-            <span style="color: gold;">${user.email.split('@')[0]}</span>
-            <a href="/profile/" style="color: white; margin: 0 15px;">Profile</a>
-            <button onclick="logout()" style="padding: 8px 16px; background: #ff4444;">Logout</button>
-        `;
-    } else {
-        userSection.innerHTML = `<button onclick="showAuthModal()" style="padding: 8px 16px;">Sign Up / Login</button>`;
-    }
-}
-
-function logout() {
-    supabaseClient.auth.signOut().then(() => location.reload());
-}
-
-updateHeader();
