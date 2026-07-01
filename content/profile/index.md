@@ -21,7 +21,7 @@ async function loadProfile() {
     const { data: profile } = await supabaseClient
         .from('profiles')
         .select('vsb_coins')
-        .eq('email', user.email)
+        .eq('user_id', user.id)
         .single();
 
     document.getElementById('profile-content').innerHTML = `

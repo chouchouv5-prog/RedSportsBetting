@@ -24,15 +24,24 @@ async function updateHeader() {
 
     const { data: { user } } = await supabaseClient.auth.getUser();
 
-    if (user) {
-        userSection.innerHTML = `
-            <span style="color: gold;">${user.email.split('@')[0]}</span>
-            <a href="/profile/" style="color: white; margin: 0 15px;">Profile</a>
-            <button onclick="logout()" style="padding: 8px 16px; background: #ff4444; color: white;">Logout</button>
-        `;
-    } else {
-        userSection.innerHTML = `<button onclick="showAuthModal()" style="padding: 8px 16px;">Sign Up / Login</button>`;
-    }
+   if (user) {
+    const { data: profile } = await supabaseClient
+        .from('profiles')
+        .select('vsb_coins')
+        .eq('user_id', user.id)
+        .single();
+
+    const coins = profile ? profile.vsb_coins : 0;
+
+    userSection.innerHTML = `
+        <span style="color: gold;">${user.email.split('@')[0]}</span>
+        <span style="color: #f2b705; font-weight: bold;">💰 ${coins}</span>
+        <a href="/profile/" style="color: white; margin: 0 15px;">Profile</a>
+        <button onclick="logout()" style="padding: 8px 16px; background: #ff4444; color: white;">Logout</button>
+    `;
+} else {
+    userSection.innerHTML = `<button onclick="showAuthModal()" style="padding: 8px 16px;">Sign Up / Login</button>`;
+}
 }
 
 function logout() {
