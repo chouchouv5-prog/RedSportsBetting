@@ -27,7 +27,8 @@ theme = 'ananke'
   name = "Profile"
   url = "/profile/"
   weight = 5
-  [[menu.main]]
-  name = "Matchs"
-  url = "/matches/"
-  weight = 3
+
+  [markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true

@@ -59,16 +59,60 @@ function closeModal() {
 </script>
     <main>
         
-  <article class="cf pa3 pa4-m pa4-l">
-    <div class="measure-wide-l center f4 lh-copy nested-copy-line-height nested-links mid-gray">
-      <p>Below you will find pages that utilize the taxonomy term “Categories”</p>
-    </div>
-  </article>
-  <div class="mw8 center">
-    <section class="flex-ns mt5 flex-wrap justify-around">
+  
+
+  <article class="page-profile flex-l mw7 center ph3 flex-wrap justify-between">
+    <header class="mt4 w-100"><aside class="instapaper_ignoref b helvetica tracked ttu">
+    <a class="link dim" href="https://redsportsbetting.pages.dev/">Welcome to VSB1</a>
+  </aside><div id="sharing" class="mt3 ananke-socials"></div>
+<h1 class="f1 athelas mt3 mb1">My Profile</h1>
       
-    </section>
-  </div>
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2026-06-29T00:00:00Z">June 29, 2026</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-100-l"><h1 id="my-profile">My Profile</h1>
+<div id="profile-content">
+    Loading your profile...
+</div>
+<script>
+async function loadProfile() {
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    if (!user) {
+        document.getElementById('profile-content').innerHTML = `<p>Please <a href="/">login</a> first.</p>`;
+        return;
+    }
+
+    const { data: profile } = await supabaseClient
+        .from('profiles')
+        .select('vsb_coins')
+        .eq('user_id', user.id)
+        .single();
+
+    document.getElementById('profile-content').innerHTML = `
+        <p><strong>Email:</strong> ${user.email}</p>
+        <p><strong>VSB Coins:</strong> <span style="color: gold; font-size: 1.8em;">${profile ? profile.vsb_coins : 1000}</span></p>
+        <button onclick="logout()" style="padding: 12px 24px; background: #ff4444; color: white; border: none; border-radius: 5px; cursor: pointer;">Logout</button>
+    `;
+}
+
+function logout() {
+    supabaseClient.auth.signOut().then(() => location.href = "/");
+}
+
+loadProfile();
+</script><ul class="pa0">
+  
+</ul><ul class="pa0">
+  
+</ul>
+
+      
+    </div></article>
 
     </main>
 </body>

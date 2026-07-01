@@ -6,7 +6,21 @@
     <description>Recent content in Welcome to VSB1 on VSB1 - Virtual Sports Betting</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate></lastBuildDate>
+    <lastBuildDate>Wed, 01 Jul 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://redsportsbetting.pages.dev/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Matchs à venir</title>
+      <link>https://redsportsbetting.pages.dev/matches/</link>
+      <pubDate>Wed, 01 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://redsportsbetting.pages.dev/matches/</guid>
+      <description>&lt;div id=&#34;matches-container&#34;&gt;Chargement des matchs...&lt;/div&gt;&#xA;&lt;div id=&#34;bet-modal&#34; style=&#34;display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center;&#34;&gt;&#xA;    &lt;div style=&#34;background: white; color: black; padding: 30px; border-radius: 10px; width: 350px;&#34;&gt;&#xA;        &lt;h3 id=&#34;bet-match-title&#34;&gt;&lt;/h3&gt;&#xA;        &lt;p id=&#34;bet-choice-label&#34;&gt;&lt;/p&gt;&#xA;        &lt;input id=&#34;bet-amount&#34; type=&#34;number&#34; placeholder=&#34;Montant en coins&#34; style=&#34;width: 100%; padding: 10px; margin: 10px 0; box-sizing: border-box;&#34;&gt;&#xA;        &lt;button onclick=&#34;confirmBet()&#34; style=&#34;width: 100%; padding: 10px; background: #f2b705; border: none; cursor: pointer; font-weight: bold;&#34;&gt;Confirmer le pari&lt;/button&gt;&#xA;        &lt;button onclick=&#34;closeBetModal()&#34; style=&#34;width: 100%; padding: 10px; margin-top: 10px; background: gray; color: white; border: none; cursor: pointer;&#34;&gt;Annuler&lt;/button&gt;&#xA;    &lt;/div&gt;&#xA;&lt;/div&gt;&#xA;&lt;script&gt;&#xA;let currentMatchId = null;&#xA;let currentChoice = null;&#xA;let currentOdds = null;&#xA;&#xA;async function loadMatches() {&#xA;    const { data: matches, error } = await supabaseClient&#xA;        .from(&#39;matches&#39;)&#xA;        .select(&#39;*&#39;)&#xA;        .eq(&#39;status&#39;, &#39;upcoming&#39;)&#xA;        .order(&#39;match_date&#39;, { ascending: true });&#xA;&#xA;    const container = document.getElementById(&#39;matches-container&#39;);&#xA;&#xA;    if (!matches || matches.length === 0) {&#xA;        container.innerHTML = &#34;&lt;p&gt;Aucun match pour le moment.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>My Profile</title>
+      <link>https://redsportsbetting.pages.dev/profile/</link>
+      <pubDate>Mon, 29 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://redsportsbetting.pages.dev/profile/</guid>
+      <description>&lt;h1 id=&#34;my-profile&#34;&gt;My Profile&lt;/h1&gt;&#xA;&lt;div id=&#34;profile-content&#34;&gt;&#xA;    Loading your profile...&#xA;&lt;/div&gt;&#xA;&lt;script&gt;&#xA;async function loadProfile() {&#xA;    const { data: { user } } = await supabaseClient.auth.getUser();&#xA;    if (!user) {&#xA;        document.getElementById(&#39;profile-content&#39;).innerHTML = `&lt;p&gt;Please &lt;a href=&#34;https://redsportsbetting.pages.dev/&#34;&gt;login&lt;/a&gt; first.&lt;/p&gt;`;&#xA;        return;&#xA;    }&#xA;&#xA;    const { data: profile } = await supabaseClient&#xA;        .from(&#39;profiles&#39;)&#xA;        .select(&#39;vsb_coins&#39;)&#xA;        .eq(&#39;user_id&#39;, user.id)&#xA;        .single();&#xA;&#xA;    document.getElementById(&#39;profile-content&#39;).innerHTML = `&#xA;        &lt;p&gt;&lt;strong&gt;Email:&lt;/strong&gt; ${user.email}&lt;/p&gt;&#xA;        &lt;p&gt;&lt;strong&gt;VSB Coins:&lt;/strong&gt; &lt;span style=&#34;color: gold; font-size: 1.8em;&#34;&gt;${profile ? profile.vsb_coins : 1000}&lt;/span&gt;&lt;/p&gt;&#xA;        &lt;button onclick=&#34;logout()&#34; style=&#34;padding: 12px 24px; background: #ff4444; color: white; border: none; border-radius: 5px; cursor: pointer;&#34;&gt;Logout&lt;/button&gt;&#xA;    `;&#xA;}&#xA;&#xA;function logout() {&#xA;    supabaseClient.auth.signOut().then(() =&gt; location.href = &#34;/&#34;);&#xA;}&#xA;&#xA;loadProfile();&#xA;&lt;/script&gt;</description>
+    </item>
   </channel>
 </rss>
