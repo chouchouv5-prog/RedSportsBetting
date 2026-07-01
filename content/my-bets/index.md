@@ -49,5 +49,12 @@ async function loadMyBets() {
     `).join('');
 }
 
-loadMyBets();
+function waitForSupabase(callback) {
+    if (typeof supabaseClient !== 'undefined') {
+        callback();
+    } else {
+        setTimeout(() => waitForSupabase(callback), 100);
+    }
+}
+waitForSupabase(loadMyBets);
 </script>
