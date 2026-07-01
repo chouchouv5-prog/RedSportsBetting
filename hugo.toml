@@ -28,12 +28,12 @@ theme = 'ananke'
   url = "/profile/"
   weight = 5
 
-  [markup]
-  [markup.goldmark]
-    [markup.goldmark.renderer]
-      unsafe = true
-
-      [[menu.main]]
+[[menu.main]]
   name = "My Bets"
   url = "/my-bets/"
   weight = 6
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
