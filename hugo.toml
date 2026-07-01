@@ -38,3 +38,8 @@ theme = 'ananke'
     [markup.goldmark.renderer]
       unsafe = true
       
+      [[menu.main]]
+  name = "Results"
+  url = "/results/"
+  weight = 3
+  

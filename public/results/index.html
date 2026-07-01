@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.161.1">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VSB1 - Virtual Sports Betting</title>
@@ -66,145 +65,24 @@ function closeModal() {
 }
 </script>
     <main>
-        <article class="cf ph3 ph5-l pv3 pv4-l f4 tc-l center measure-wide lh-copy nested-links mid-gray">
-    <p>Welcome to <strong>VSB1 - Virtual Sports Betting</strong>!</p>
-<p>Get ready to experience the thrill of the game. We are building the future of online virtual sports.</p>
-<ul>
-<li>Stay tuned for upcoming matches.</li>
-<li>Place your virtual bets.</li>
-<li>Climb the leaderboard!</li>
-</ul>
-
-  </article>
-
-  
-  
-  
-  
+        
   
 
-  
-    <div class="pa3 pa4-ns w-100 w-70-ns center">
+  <article class="page-results flex-l mw7 center ph3 flex-wrap justify-between">
+    <header class="mt4 w-100"><aside class="instapaper_ignoref b helvetica tracked ttu">
+    <a class="link dim" href="https://redsportsbetting.pages.dev/">Welcome to VSB1</a>
+  </aside><div id="sharing" class="mt3 ananke-socials"></div>
+<h1 class="f1 athelas mt3 mb1">Results</h1>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2026-07-01T00:00:00Z">July 1, 2026</time>
       
 
-      <section class="w-100 mw8">
-        
-        
-          <div class="w-100 mb4 relative">
-            
-
-<article class="bb b--black-10">
-  <div class="db pv4 ph3 ph0-l dark-gray no-underline">
-    <div class="flex-column flex-row-ns flex">
       
-      <div class="blah w-100">
-        
-          <time class="f6 db" datetime="2026-07-01T00:00:00Z">July 1, 2026</time>
-        
-        <h1 class="f3 fw1 athelas mt0 lh-title">
-          <a href="/matches/" class="color-inherit dim link">
-            Matchs à venir
-            </a>
-        </h1>
-        <div class="f6 f5-l lh-copy nested-copy-line-height nested-links">
-          <div id="matches-container">Chargement des matchs...</div>
-<div id="bet-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center;">
-    <div style="background: white; color: black; padding: 30px; border-radius: 10px; width: 350px;">
-        <h3 id="bet-match-title"></h3>
-        <p id="bet-choice-label"></p>
-        <input id="bet-amount" type="number" placeholder="Montant en coins" style="width: 100%; padding: 10px; margin: 10px 0; box-sizing: border-box;">
-        <button onclick="confirmBet()" style="width: 100%; padding: 10px; background: #f2b705; border: none; cursor: pointer; font-weight: bold;">Confirmer le pari</button>
-        <button onclick="closeBetModal()" style="width: 100%; padding: 10px; margin-top: 10px; background: gray; color: white; border: none; cursor: pointer;">Annuler</button>
-    </div>
-</div>
-<script>
-let currentMatchId = null;
-let currentChoice = null;
-let currentOdds = null;
-
-async function loadMatches() {
-    const { data: matches, error } = await supabaseClient
-        .from('matches')
-        .select('*')
-        .eq('status', 'upcoming')
-        .order('match_date', { ascending: true });
-
-    const container = document.getElementById('matches-container');
-
-    if (!matches || matches.length === 0) {
-        container.innerHTML = "<p>Aucun match pour le moment.</p>
-        </div>
-        <a href="/matches/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
-      </div>
-    </div>
-  </div>
-</article>
-
-          </div>
-        
-          <div class="w-100 mb4 relative">
-            
-
-<article class="bb b--black-10">
-  <div class="db pv4 ph3 ph0-l dark-gray no-underline">
-    <div class="flex-column flex-row-ns flex">
       
-      <div class="blah w-100">
-        
-          <time class="f6 db" datetime="2026-07-01T00:00:00Z">July 1, 2026</time>
-        
-        <h1 class="f3 fw1 athelas mt0 lh-title">
-          <a href="/my-bets/" class="color-inherit dim link">
-            My Bets
-            </a>
-        </h1>
-        <div class="f6 f5-l lh-copy nested-copy-line-height nested-links">
-          <div id="bets-container">Loading your bets...</div>
-<script>
-async function loadMyBets() {
-    const { data: { user } } = await supabaseClient.auth.getUser();
-    const container = document.getElementById('bets-container');
-
-    if (!user) {
-        container.innerHTML = `<p>Please <a href="/">login</a> to see your bets.</p>`;
-        return;
-    }
-
-    const { data: bets, error } = await supabaseClient
-        .from('bets')
-        .select('*, matches(team_home, team_away, match_date)')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
-
-    if (!bets || bets.length === 0) {
-        container.innerHTML = "<p>You haven't placed any bets yet. <a href='/matches/'>See upcoming matches</a>.</p>
-        </div>
-        <a href="/my-bets/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
-      </div>
-    </div>
-  </div>
-</article>
-
-          </div>
-        
-          <div class="w-100 mb4 relative">
-            
-
-<article class="bb b--black-10">
-  <div class="db pv4 ph3 ph0-l dark-gray no-underline">
-    <div class="flex-column flex-row-ns flex">
-      
-      <div class="blah w-100">
-        
-          <time class="f6 db" datetime="2026-07-01T00:00:00Z">July 1, 2026</time>
-        
-        <h1 class="f3 fw1 athelas mt0 lh-title">
-          <a href="/results/" class="color-inherit dim link">
-            Results
-            </a>
-        </h1>
-        <div class="f6 f5-l lh-copy nested-copy-line-height nested-links">
-          <div id="results-container">Loading results...</div>
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-100-l"><div id="results-container">Loading results...</div>
 <script>
 async function loadResults() {
     const { data: matches, error } = await supabaseClient
@@ -240,34 +118,14 @@ function waitForSupabase(callback) {
     }
 }
 waitForSupabase(loadResults);
-</script>
-        </div>
-        <a href="/results/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
-      </div>
-    </div>
-  </div>
-</article>
-
-          </div>
-        
-      </section>
-
-      
-        <section class="w-100">
-          <h1 class="f3">More</h1>
-          
-          
-            <h2 class="f5 fw4 mb4 dib mr3">
-              <a href="/profile/" class="link black dim">
-                My Profile
-              </a>
-            </h2>
-          
-        </section>
-      
-
-    </div>
+</script><ul class="pa0">
   
+</ul><ul class="pa0">
+  
+</ul>
+
+      
+    </div></article>
 
     </main>
 </body>
