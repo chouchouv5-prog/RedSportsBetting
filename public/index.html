@@ -144,6 +144,51 @@ async function loadMatches() {
       
       <div class="blah w-100">
         
+          <time class="f6 db" datetime="2026-07-01T00:00:00Z">July 1, 2026</time>
+        
+        <h1 class="f3 fw1 athelas mt0 lh-title">
+          <a href="/my-bets/" class="color-inherit dim link">
+            My Bets
+            </a>
+        </h1>
+        <div class="f6 f5-l lh-copy nested-copy-line-height nested-links">
+          <div id="bets-container">Loading your bets...</div>
+<script>
+async function loadMyBets() {
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    const container = document.getElementById('bets-container');
+
+    if (!user) {
+        container.innerHTML = `<p>Please <a href="/">login</a> to see your bets.</p>`;
+        return;
+    }
+
+    const { data: bets, error } = await supabaseClient
+        .from('bets')
+        .select('*, matches(team_home, team_away, match_date)')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+
+    if (!bets || bets.length === 0) {
+        container.innerHTML = "<p>You haven't placed any bets yet. <a href='/matches/'>See upcoming matches</a>.</p>
+        </div>
+        <a href="/my-bets/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+      </div>
+    </div>
+  </div>
+</article>
+
+          </div>
+        
+          <div class="w-100 mb4 relative">
+            
+
+<article class="bb b--black-10">
+  <div class="db pv4 ph3 ph0-l dark-gray no-underline">
+    <div class="flex-column flex-row-ns flex">
+      
+      <div class="blah w-100">
+        
           <time class="f6 db" datetime="2026-06-29T00:00:00Z">June 29, 2026</time>
         
         <h1 class="f3 fw1 athelas mt0 lh-title">

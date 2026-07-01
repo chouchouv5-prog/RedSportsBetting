@@ -32,3 +32,8 @@ theme = 'ananke'
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true
+
+      [[menu.main]]
+  name = "My Bets"
+  url = "/my-bets/"
+  weight = 6
