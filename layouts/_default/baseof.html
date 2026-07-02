@@ -52,5 +52,11 @@ async function updateHeader() {
         userSection.innerHTML = `<button onclick="showAuthModal()" style="padding: 8px 16px;">Sign Up / Login</button>`;
     }
 }
+
+function logout() {
+    supabaseClient.auth.signOut().then(() => location.reload());
+}
+
+updateHeader();
 </script>
 </html>
