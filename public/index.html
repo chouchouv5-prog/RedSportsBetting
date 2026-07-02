@@ -31,28 +31,60 @@
 
 <div id="auth-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center; overflow-y: auto;">
     <div style="background: white; color: black; padding: 30px; border-radius: 10px; width: 350px; margin: 20px;">
-        <h2>Sign Up / Login</h2>
+        <div style="display: flex; margin-bottom: 15px;">
+            <button onclick="switchMode('login')" id="tab-login" style="flex: 1; padding: 10px; border: none; cursor: pointer; background: #1a0000; color: white; font-weight: bold;">Login</button>
+            <button onclick="switchMode('signup')" id="tab-signup" style="flex: 1; padding: 10px; border: none; cursor: pointer; background: #eee; color: #333; font-weight: bold;">Sign Up</button>
+        </div>
+
         <input id="email" type="email" placeholder="Email" style="width: 100%; padding: 10px; margin: 5px 0; box-sizing: border-box;"><br>
         <input id="password" type="password" placeholder="Password" style="width: 100%; padding: 10px; margin: 5px 0; box-sizing: border-box;"><br>
 
-        <p style="margin: 15px 0 5px 0; font-weight: bold; font-size: 0.9em;">Optional (for sign up):</p>
-        <input id="username" type="text" placeholder="Username" style="width: 100%; padding: 10px; margin: 5px 0; box-sizing: border-box;"><br>
-        <input id="first_name" type="text" placeholder="First name" style="width: 100%; padding: 10px; margin: 5px 0; box-sizing: border-box;"><br>
-        <input id="last_name" type="text" placeholder="Last name" style="width: 100%; padding: 10px; margin: 5px 0; box-sizing: border-box;"><br>
-        <select id="gender" style="width: 100%; padding: 10px; margin: 5px 0; box-sizing: border-box;">
-            <option value="">Gender (optional)</option>
-            <option value="male">♂️ Male</option>
-            <option value="female">♀️ Female</option>
-            <option value="other">⚧️ Other</option>
-        </select><br>
+        <div id="signup-fields" style="display: none;">
+            <input id="username" type="text" placeholder="Username" style="width: 100%; padding: 10px; margin: 5px 0; box-sizing: border-box;"><br>
+            <input id="first_name" type="text" placeholder="First name" style="width: 100%; padding: 10px; margin: 5px 0; box-sizing: border-box;"><br>
+            <input id="last_name" type="text" placeholder="Last name" style="width: 100%; padding: 10px; margin: 5px 0; box-sizing: border-box;"><br>
+            <select id="gender" style="width: 100%; padding: 10px; margin: 5px 0; box-sizing: border-box;">
+                <option value="">Gender (optional)</option>
+                <option value="male">♂️ Male</option>
+                <option value="female">♀️ Female</option>
+                <option value="other">⚧️ Other</option>
+            </select><br>
+        </div>
 
-        <button onclick="signUp()" style="width: 100%; margin: 10px 0 5px 0; padding: 10px; background: #d4af37; border: none; cursor: pointer;">Sign Up</button>
-        <button onclick="signIn()" style="width: 100%; margin: 5px 0; padding: 10px; background: #1a0000; color: white; border: none; cursor: pointer;">Login</button>
+        <button id="submit-btn" onclick="signIn()" style="width: 100%; margin: 10px 0 5px 0; padding: 10px; background: #d4af37; border: none; cursor: pointer; font-weight: bold;">Login</button>
         <button onclick="closeModal()" style="width: 100%; margin-top: 10px; background: gray; color: white; border: none; padding: 10px; cursor: pointer;">Close</button>
     </div>
 </div>
 
 <script>
+let authMode = 'login';
+
+function switchMode(mode) {
+    authMode = mode;
+    const signupFields = document.getElementById('signup-fields');
+    const submitBtn = document.getElementById('submit-btn');
+    const tabLogin = document.getElementById('tab-login');
+    const tabSignup = document.getElementById('tab-signup');
+
+    if (mode === 'signup') {
+        signupFields.style.display = 'block';
+        submitBtn.textContent = 'Sign Up';
+        submitBtn.onclick = signUp;
+        tabSignup.style.background = '#1a0000';
+        tabSignup.style.color = 'white';
+        tabLogin.style.background = '#eee';
+        tabLogin.style.color = '#333';
+    } else {
+        signupFields.style.display = 'none';
+        submitBtn.textContent = 'Login';
+        submitBtn.onclick = signIn;
+        tabLogin.style.background = '#1a0000';
+        tabLogin.style.color = 'white';
+        tabSignup.style.background = '#eee';
+        tabSignup.style.color = '#333';
+    }
+}
+
 async function signUp() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
@@ -78,12 +110,16 @@ async function signIn() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-    if (error) alert(error.message);
-    else location.reload();
+    if (error) {
+        alert("Incorrect email or password. Please check your details and try again.");
+    } else {
+        location.reload();
+    }
 }
 
 function showAuthModal() {
     document.getElementById('auth-modal').style.display = 'flex';
+    switchMode('login');
 }
 
 function closeModal() {
