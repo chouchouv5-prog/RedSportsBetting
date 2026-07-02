@@ -10,7 +10,7 @@ draft: false
 async function loadLeaderboard() {
     const { data: profiles, error } = await supabaseClient
         .from('profiles')
-        .select('email, vsb_coins')
+        .select('email, username, vsb_coins')
         .order('vsb_coins', { ascending: false })
         .limit(20);
 
@@ -36,7 +36,7 @@ async function loadLeaderboard() {
                 ${profiles.map((p, i) => `
                     <tr style="border-bottom: 1px solid #ddd;">
                         <td style="padding: 10px;">${medals[i] || (i + 1)}</td>
-                        <td style="padding: 10px;">${p.email.split('@')[0]}</td>
+                        <td style="padding: 10px;">${p.username || p.email.split('@')[0]}</td>
                         <td style="padding: 10px; text-align: right; color: #f2b705; font-weight: bold;">${p.vsb_coins}</td>
                     </tr>
                 `).join('')}
