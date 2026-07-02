@@ -47,3 +47,8 @@ theme = 'ananke'
   name = "News"
   url = "/news/"
   weight = 2
+
+  [[menu.main]]
+  name = "Settings"
+  url = "/settings/"
+  weight = 7

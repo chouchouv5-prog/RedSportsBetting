@@ -32,7 +32,7 @@ async function loadProfile() {
 
     container.innerHTML = `
         <div style="text-align:center; margin-bottom:15px;">${getAvatarHTML(displayName, 80)}</div>
-        <p><strong>Email:</strong> ${user.email}</p>
+        <p style="text-align:center;"><a href="/settings/">⚙️ Account Settings</a></p>
         ${profile && profile.username ? `<p><strong>Username:</strong> ${profile.username}</p>` : ''}
         ${profile && (profile.first_name || profile.last_name) ? `<p><strong>Name:</strong> ${profile.first_name || ''} ${profile.last_name || ''} ${genderIcon}</p>` : ''}
         <p><strong>VSB Coins:</strong> <span style="color: gold; font-size: 1.8em;">${profile ? profile.vsb_coins : 1000}</span></p>
