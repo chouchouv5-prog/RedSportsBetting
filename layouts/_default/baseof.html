@@ -42,12 +42,13 @@ async function updateHeader() {
         const displayName = profile && profile.username ? profile.username : user.email.split('@')[0];
 
         userSection.innerHTML = `
-            ${getAvatarHTML(displayName, 30)}
-            <span style="color: gold;">${displayName}</span>
-            <span style="color: #f2b705; font-weight: bold;">💰 ${coins}</span>
-            <a href="/profile/" style="color: white; margin: 0 15px;">Profile</a>
-            <button onclick="logout()" style="padding: 8px 16px; background: #ff4444; color: white;">Logout</button>
-        `;
+    <a href="/profile/" style="display:flex; align-items:center; gap:8px; text-decoration:none;">
+        ${getAvatarHTML(displayName, 30)}
+        <span style="color: gold;">${displayName}</span>
+    </a>
+    <span style="color: #f2b705; font-weight: bold;">💰 ${coins}</span>
+    <button onclick="logout()" style="padding: 8px 16px; background: #ff4444; color: white;">Logout</button>
+`;
     } else {
         userSection.innerHTML = `<button onclick="showAuthModal()" style="padding: 8px 16px;">Sign Up / Login</button>`;
     }

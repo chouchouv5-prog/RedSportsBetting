@@ -191,30 +191,40 @@ waitForSupabase(loadResults);
     </main>
 </body>
 <script>
+    function getAvatarHTML(name, size) {
+    const letter = (name || '?').charAt(0).toUpperCase();
+    const colors = ['#d4af37', '#145214', '#8b0000', '#1a6b1a', '#ff8c00'];
+    const colorIndex = letter.charCodeAt(0) % colors.length;
+    const bgColor = colors[colorIndex];
+    return `<span style="display:inline-flex; align-items:center; justify-content:center; width:${size}px; height:${size}px; border-radius:50%; background:${bgColor}; color:white; font-weight:bold; font-size:${size*0.5}px;">${letter}</span>`;
+}
 async function updateHeader() {
     const userSection = document.getElementById('user-section');
     if (!userSection) return;
 
     const { data: { user } } = await supabaseClient.auth.getUser();
 
-   if (user) {
-    const { data: profile } = await supabaseClient
-        .from('profiles')
-        .select('vsb_coins')
-        .eq('user_id', user.id)
-        .single();
+    if (user) {
+        const { data: profile } = await supabaseClient
+            .from('profiles')
+            .select('vsb_coins, username')
+            .eq('user_id', user.id)
+            .single();
 
-    const coins = profile ? profile.vsb_coins : 0;
+        const coins = profile ? profile.vsb_coins : 0;
+        const displayName = profile && profile.username ? profile.username : user.email.split('@')[0];
 
-    userSection.innerHTML = `
-        <span style="color: gold;">${user.email.split('@')[0]}</span>
-        <span style="color: #f2b705; font-weight: bold;">💰 ${coins}</span>
-        <a href="/profile/" style="color: white; margin: 0 15px;">Profile</a>
-        <button onclick="logout()" style="padding: 8px 16px; background: #ff4444; color: white;">Logout</button>
-    `;
-} else {
-    userSection.innerHTML = `<button onclick="showAuthModal()" style="padding: 8px 16px;">Sign Up / Login</button>`;
-}
+        userSection.innerHTML = `
+    <a href="/profile/" style="display:flex; align-items:center; gap:8px; text-decoration:none;">
+        ${getAvatarHTML(displayName, 30)}
+        <span style="color: gold;">${displayName}</span>
+    </a>
+    <span style="color: #f2b705; font-weight: bold;">💰 ${coins}</span>
+    <button onclick="logout()" style="padding: 8px 16px; background: #ff4444; color: white;">Logout</button>
+`;
+    } else {
+        userSection.innerHTML = `<button onclick="showAuthModal()" style="padding: 8px 16px;">Sign Up / Login</button>`;
+    }
 }
 
 function logout() {
