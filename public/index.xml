@@ -30,6 +30,13 @@
       <description>&lt;div id=&#34;bets-container&#34;&gt;Loading your bets...&lt;/div&gt;&#xA;&lt;script&gt;&#xA;async function loadMyBets() {&#xA;    const { data: { user } } = await supabaseClient.auth.getUser();&#xA;    const container = document.getElementById(&#39;bets-container&#39;);&#xA;&#xA;    if (!user) {&#xA;        container.innerHTML = `&lt;p&gt;Please &lt;a href=&#34;https://redsportsbetting.pages.dev/&#34;&gt;login&lt;/a&gt; to see your bets.&lt;/p&gt;`;&#xA;        return;&#xA;    }&#xA;&#xA;    const { data: bets, error } = await supabaseClient&#xA;        .from(&#39;bets&#39;)&#xA;        .select(&#39;*, matches(team_home, team_away, match_date)&#39;)&#xA;        .eq(&#39;user_id&#39;, user.id)&#xA;        .order(&#39;created_at&#39;, { ascending: false });&#xA;&#xA;    if (!bets || bets.length === 0) {&#xA;        container.innerHTML = &#34;&lt;p&gt;You haven&#39;t placed any bets yet. &lt;a href=&#39;https://redsportsbetting.pages.dev/matches/&#39;&gt;See upcoming matches&lt;/a&gt;.&lt;/p&gt;</description>
     </item>
     <item>
+      <title>PSG Beats Marseille 2-1 in Thrilling Derby</title>
+      <link>https://redsportsbetting.pages.dev/news/psg-marseille-review/</link>
+      <pubDate>Wed, 01 Jul 2026 00:00:00 +0000</pubDate>
+      <guid>https://redsportsbetting.pages.dev/news/psg-marseille-review/</guid>
+      <description>&lt;p&gt;Paris Saint-Germain claimed a hard-fought 2-1 victory over Marseille in this weekend&amp;rsquo;s Classique, delighting home fans with a strong second-half performance.&lt;/p&gt;&#xA;&lt;h2 id=&#34;match-summary&#34;&gt;Match Summary&lt;/h2&gt;&#xA;&lt;p&gt;The match started evenly, with both sides testing each other&amp;rsquo;s defenses in the opening minutes. PSG broke the deadlock just before half-time, and doubled their lead early in the second half. Marseille pulled one back late on, but couldn&amp;rsquo;t find an equalizer.&lt;/p&gt;&#xA;&lt;h2 id=&#34;what-this-means-for-the-table&#34;&gt;What This Means for the Table&lt;/h2&gt;&#xA;&lt;p&gt;This result strengthens PSG&amp;rsquo;s position at the top, while Marseille will look to bounce back in their next fixture.&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>Results</title>
       <link>https://redsportsbetting.pages.dev/results/</link>
       <pubDate>Wed, 01 Jul 2026 00:00:00 +0000</pubDate>
@@ -42,6 +49,13 @@
       <pubDate>Mon, 29 Jun 2026 00:00:00 +0000</pubDate>
       <guid>https://redsportsbetting.pages.dev/profile/</guid>
       <description>&lt;h1 id=&#34;my-profile&#34;&gt;My Profile&lt;/h1&gt;&#xA;&lt;div id=&#34;profile-content&#34;&gt;&#xA;    Loading your profile...&#xA;&lt;/div&gt;&#xA;&lt;script&gt;&#xA;async function loadProfile() {&#xA;    const { data: { user } } = await supabaseClient.auth.getUser();&#xA;    if (!user) {&#xA;        document.getElementById(&#39;profile-content&#39;).innerHTML = `&lt;p&gt;Please &lt;a href=&#34;https://redsportsbetting.pages.dev/&#34;&gt;login&lt;/a&gt; first.&lt;/p&gt;`;&#xA;        return;&#xA;    }&#xA;&#xA;    const { data: profile } = await supabaseClient&#xA;        .from(&#39;profiles&#39;)&#xA;        .select(&#39;vsb_coins&#39;)&#xA;        .eq(&#39;user_id&#39;, user.id)&#xA;        .single();&#xA;&#xA;    document.getElementById(&#39;profile-content&#39;).innerHTML = `&#xA;        &lt;p&gt;&lt;strong&gt;Email:&lt;/strong&gt; ${user.email}&lt;/p&gt;&#xA;        &lt;p&gt;&lt;strong&gt;VSB Coins:&lt;/strong&gt; &lt;span style=&#34;color: gold; font-size: 1.8em;&#34;&gt;${profile ? profile.vsb_coins : 1000}&lt;/span&gt;&lt;/p&gt;&#xA;        &lt;button onclick=&#34;logout()&#34; style=&#34;padding: 12px 24px; background: #ff4444; color: white; border: none; border-radius: 5px; cursor: pointer;&#34;&gt;Logout&lt;/button&gt;&#xA;    `;&#xA;}&#xA;&#xA;function logout() {&#xA;    supabaseClient.auth.signOut().then(() =&gt; location.href = &#34;/&#34;);&#xA;}&#xA;&#xA;loadProfile();&#xA;&lt;/script&gt;</description>
+    </item>
+    <item>
+      <title>Champions League: What to Expect This Season</title>
+      <link>https://redsportsbetting.pages.dev/news/champions-league-preview/</link>
+      <pubDate>Sun, 28 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>https://redsportsbetting.pages.dev/news/champions-league-preview/</guid>
+      <description>&lt;p&gt;As the new Champions League season approaches, excitement is building among fans of Europe&amp;rsquo;s biggest clubs.&lt;/p&gt;&#xA;&lt;h2 id=&#34;top-contenders&#34;&gt;Top Contenders&lt;/h2&gt;&#xA;&lt;p&gt;Several heavyweight clubs enter the competition as favorites, with strong squads and ambitious transfer windows behind them.&lt;/p&gt;&#xA;&lt;h2 id=&#34;how-to-follow&#34;&gt;How to Follow&lt;/h2&gt;&#xA;&lt;p&gt;Check our &lt;a href=&#34;https://redsportsbetting.pages.dev/results/&#34;&gt;Results page&lt;/a&gt; throughout the season to keep track of outcomes, and don&amp;rsquo;t forget to place your predictions on &lt;a href=&#34;https://redsportsbetting.pages.dev/matches/&#34;&gt;VSB1&lt;/a&gt;!&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

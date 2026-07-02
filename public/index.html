@@ -21,6 +21,7 @@
         <a href="/my-bets/" style="color: white; text-decoration: none; font-weight: 500;">My Bets</a>
         <a href="/leaderboard/" style="color: white; text-decoration: none; font-weight: 500;">Leaderboard</a>
         <a href="/results/" style="color: white; text-decoration: none; font-weight: 500;">Results</a>
+        <a href="/news/" style="color: white; text-decoration: none; font-weight: 500;">News</a>
     </nav>
 
     <div id="user-section" style="display: flex; align-items: center; gap: 15px; margin-left: auto;">
@@ -102,62 +103,18 @@ function closeModal() {
           <time class="f6 db" datetime="2026-07-01T00:00:00Z">July 1, 2026</time>
         
         <h1 class="f3 fw1 athelas mt0 lh-title">
-          <a href="/leaderboard/" class="color-inherit dim link">
-            Leaderboard
+          <a href="/news/psg-marseille-review/" class="color-inherit dim link">
+            PSG Beats Marseille 2-1 in Thrilling Derby
             </a>
         </h1>
         <div class="f6 f5-l lh-copy nested-copy-line-height nested-links">
-          <div id="leaderboard-container">Loading leaderboard...</div>
-<script>
-async function loadLeaderboard() {
-    const { data: profiles, error } = await supabaseClient
-        .from('profiles')
-        .select('email, vsb_coins')
-        .order('vsb_coins', { ascending: false })
-        .limit(20);
-
-    const container = document.getElementById('leaderboard-container');
-
-    if (!profiles || profiles.length === 0) {
-        container.innerHTML = "<p>No players yet.</p>";
-        return;
-    }
-
-    const medals = ['🥇', '🥈', '🥉'];
-
-    container.innerHTML = `
-        <table style="width: 100%; border-collapse: collapse;">
-            <thead>
-                <tr style="border-bottom: 3px solid #145214;">
-                    <th style="text-align: left; padding: 10px;">Rank</th>
-                    <th style="text-align: left; padding: 10px;">Player</th>
-                    <th style="text-align: right; padding: 10px;">Coins</th>
-                </tr>
-            </thead>
-            <tbody>
-                ${profiles.map((p, i) => `
-                    <tr style="border-bottom: 1px solid #ddd;">
-                        <td style="padding: 10px;">${medals[i] || (i + 1)}</td>
-                        <td style="padding: 10px;">${p.email.split('@')[0]}</td>
-                        <td style="padding: 10px; text-align: right; color: #f2b705; font-weight: bold;">${p.vsb_coins}</td>
-                    </tr>
-                `).join('')}
-            </tbody>
-        </table>
-    `;
-}
-
-function waitForSupabase(callback) {
-    if (typeof supabaseClient !== 'undefined') {
-        callback();
-    } else {
-        setTimeout(() => waitForSupabase(callback), 100);
-    }
-}
-waitForSupabase(loadLeaderboard);
-</script>
+          <p>Paris Saint-Germain claimed a hard-fought 2-1 victory over Marseille in this weekend&rsquo;s Classique, delighting home fans with a strong second-half performance.</p>
+<h2 id="match-summary">Match Summary</h2>
+<p>The match started evenly, with both sides testing each other&rsquo;s defenses in the opening minutes. PSG broke the deadlock just before half-time, and doubled their lead early in the second half. Marseille pulled one back late on, but couldn&rsquo;t find an equalizer.</p>
+<h2 id="what-this-means-for-the-table">What This Means for the Table</h2>
+<p>This result strengthens PSG&rsquo;s position at the top, while Marseille will look to bounce back in their next fixture.</p>
         </div>
-        <a href="/leaderboard/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+        <a href="/news/psg-marseille-review/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
       </div>
     </div>
   </div>
@@ -174,87 +131,21 @@ waitForSupabase(loadLeaderboard);
       
       <div class="blah w-100">
         
-          <time class="f6 db" datetime="2026-07-01T00:00:00Z">July 1, 2026</time>
+          <time class="f6 db" datetime="2026-06-28T00:00:00Z">June 28, 2026</time>
         
         <h1 class="f3 fw1 athelas mt0 lh-title">
-          <a href="/matches/" class="color-inherit dim link">
-            Matchs à venir
+          <a href="/news/champions-league-preview/" class="color-inherit dim link">
+            Champions League: What to Expect This Season
             </a>
         </h1>
         <div class="f6 f5-l lh-copy nested-copy-line-height nested-links">
-          <div id="matches-container">Chargement des matchs...</div>
-<div id="bet-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center;">
-    <div style="background: white; color: black; padding: 30px; border-radius: 10px; width: 350px;">
-        <h3 id="bet-match-title"></h3>
-        <p id="bet-choice-label"></p>
-        <input id="bet-amount" type="number" placeholder="Montant en coins" style="width: 100%; padding: 10px; margin: 10px 0; box-sizing: border-box;">
-        <button onclick="confirmBet()" style="width: 100%; padding: 10px; background: #f2b705; border: none; cursor: pointer; font-weight: bold;">Confirmer le pari</button>
-        <button onclick="closeBetModal()" style="width: 100%; padding: 10px; margin-top: 10px; background: gray; color: white; border: none; cursor: pointer;">Annuler</button>
-    </div>
-</div>
-<script>
-let currentMatchId = null;
-let currentChoice = null;
-let currentOdds = null;
-
-async function loadMatches() {
-    const { data: matches, error } = await supabaseClient
-        .from('matches')
-        .select('*')
-        .eq('status', 'upcoming')
-        .order('match_date', { ascending: true });
-
-    const container = document.getElementById('matches-container');
-
-    if (!matches || matches.length === 0) {
-        container.innerHTML = "<p>Aucun match pour le moment.</p>
+          <p>As the new Champions League season approaches, excitement is building among fans of Europe&rsquo;s biggest clubs.</p>
+<h2 id="top-contenders">Top Contenders</h2>
+<p>Several heavyweight clubs enter the competition as favorites, with strong squads and ambitious transfer windows behind them.</p>
+<h2 id="how-to-follow">How to Follow</h2>
+<p>Check our <a href="/results/">Results page</a> throughout the season to keep track of outcomes, and don&rsquo;t forget to place your predictions on <a href="/matches/">VSB1</a>!</p>
         </div>
-        <a href="/matches/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
-      </div>
-    </div>
-  </div>
-</article>
-
-          </div>
-        
-          <div class="w-100 mb4 relative">
-            
-
-<article class="bb b--black-10">
-  <div class="db pv4 ph3 ph0-l dark-gray no-underline">
-    <div class="flex-column flex-row-ns flex">
-      
-      <div class="blah w-100">
-        
-          <time class="f6 db" datetime="2026-07-01T00:00:00Z">July 1, 2026</time>
-        
-        <h1 class="f3 fw1 athelas mt0 lh-title">
-          <a href="/my-bets/" class="color-inherit dim link">
-            My Bets
-            </a>
-        </h1>
-        <div class="f6 f5-l lh-copy nested-copy-line-height nested-links">
-          <div id="bets-container">Loading your bets...</div>
-<script>
-async function loadMyBets() {
-    const { data: { user } } = await supabaseClient.auth.getUser();
-    const container = document.getElementById('bets-container');
-
-    if (!user) {
-        container.innerHTML = `<p>Please <a href="/">login</a> to see your bets.</p>`;
-        return;
-    }
-
-    const { data: bets, error } = await supabaseClient
-        .from('bets')
-        .select('*, matches(team_home, team_away, match_date)')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
-
-    if (!bets || bets.length === 0) {
-        container.innerHTML = "<p>You haven't placed any bets yet. <a href='/matches/'>See upcoming matches</a>.</p>
-        </div>
-        <a href="/my-bets/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+        <a href="/news/champions-league-preview/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
       </div>
     </div>
   </div>
@@ -264,24 +155,6 @@ async function loadMyBets() {
         
       </section>
 
-      
-        <section class="w-100">
-          <h1 class="f3">More</h1>
-          
-          
-            <h2 class="f5 fw4 mb4 dib mr3">
-              <a href="/results/" class="link black dim">
-                Results
-              </a>
-            </h2>
-          
-            <h2 class="f5 fw4 mb4 dib mr3">
-              <a href="/profile/" class="link black dim">
-                My Profile
-              </a>
-            </h2>
-          
-        </section>
       
 
     </div>

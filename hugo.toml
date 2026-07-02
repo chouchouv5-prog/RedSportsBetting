@@ -43,3 +43,7 @@ theme = 'ananke'
   url = "/results/"
   weight = 3
   
+  [[menu.main]]
+  name = "News"
+  url = "/news/"
+  weight = 2
