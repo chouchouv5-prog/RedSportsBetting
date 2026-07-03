@@ -55,3 +55,6 @@ theme = 'ananke'
 
   [outputs]
 home = ["HTML", "RSS", "JSON"]
+
+[params]
+  description = ""

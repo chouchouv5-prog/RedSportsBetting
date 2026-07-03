@@ -1,5 +1,5 @@
 ---
-title: "Welcome to VSB1"
+title: "VSB1"
 date: 2026-06-27
 draft: false
 ---
