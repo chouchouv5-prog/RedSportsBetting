@@ -1,10 +1,12 @@
 [
-{{ range where .Site.RegularPages "Section" "news" }}
+{{ $pages := where .Site.RegularPages "Section" "news" }}
+{{ range $index, $page := $pages }}
+  {{ if $index }},{{ end }}
   {
-    "title": {{ .Title | jsonify }},
-    "url": {{ .Permalink | jsonify }},
-    "date": {{ .Date.Format "2006-01-02" | jsonify }},
-    "summary": {{ .Summary | plainify | jsonify }}
-  }{{ if not .Last }},{{ end }}
+    "title": {{ $page.Title | jsonify }},
+    "url": {{ $page.Permalink | jsonify }},
+    "date": {{ $page.Date.Format "2006-01-02" | jsonify }},
+    "summary": {{ $page.Summary | plainify | jsonify }}
+  }
 {{ end }}
 ]
