@@ -52,3 +52,6 @@ theme = 'ananke'
   name = "Settings"
   url = "/settings/"
   weight = 7
+
+  [outputs]
+home = ["HTML", "RSS", "JSON"]

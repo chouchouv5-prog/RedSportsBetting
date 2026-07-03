@@ -1,0 +1,10 @@
+[
+{{ range where .Site.RegularPages "Section" "news" }}
+  {
+    "title": {{ .Title | jsonify }},
+    "url": {{ .Permalink | jsonify }},
+    "date": {{ .Date.Format "2006-01-02" | jsonify }},
+    "summary": {{ .Summary | plainify | jsonify }}
+  }{{ if not .Last }},{{ end }}
+{{ end }}
+]

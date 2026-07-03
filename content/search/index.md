@@ -7,6 +7,15 @@ draft: false
 <div id="search-container">Loading...</div>
 
 <script>
+async function searchNews(q) {
+    const res = await fetch('/index.json');
+    const articles = await res.json();
+    return articles.filter(a =>
+        a.title.toLowerCase().includes(q.toLowerCase()) ||
+        a.summary.toLowerCase().includes(q.toLowerCase())
+    );
+}
+
 async function runSearch() {
     const params = new URLSearchParams(window.location.search);
     const q = params.get('q') || '';
@@ -31,6 +40,9 @@ async function runSearch() {
         .select('username, vsb_coins')
         .ilike('username', `%${q}%`);
 
+    // Search news
+    const news = await searchNews(q);
+
     let html = '';
 
     html += `<h3>⚽ Matches (${matches ? matches.length : 0})</h3>`;
@@ -53,6 +65,18 @@ async function runSearch() {
         `).join('');
     } else {
         html += '<p>No players found.</p>';
+    }
+
+    html += `<h3>📰 News (${news.length})</h3>`;
+    if (news.length > 0) {
+        html += news.map(n => `
+            <div style="border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin-bottom: 10px; background: #f9f9f9;">
+                <a href="${n.url}">${n.title}</a> — ${new Date(n.date).toLocaleDateString('en-GB')}
+                <p style="margin: 5px 0 0; color: #666; font-size: 0.9em;">${n.summary}</p>
+            </div>
+        `).join('');
+    } else {
+        html += '<p>No news found.</p>';
     }
 
     container.innerHTML = html;
