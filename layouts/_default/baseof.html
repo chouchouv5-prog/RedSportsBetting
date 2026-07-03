@@ -12,10 +12,15 @@
     <link rel="stylesheet" href="{{ .Site.BaseURL }}css/custom.css">
 </head>
 <body>
-    {{ partial "header.html" . }}
-    <main>
-        {{ block "main" . }}{{ end }}
-    </main>
+    <div style="display: flex;">
+        {{ partial "sidebar.html" . }}
+        <div style="flex: 1; min-width: 0;">
+            {{ partial "header.html" . }}
+            <main>
+                {{ block "main" . }}{{ end }}
+            </main>
+        </div>
+    </div>
 </body>
 <script>
     function getAvatarHTML(name, size) {
