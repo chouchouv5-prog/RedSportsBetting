@@ -2,7 +2,6 @@
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-// IDs des ligues sur TheSportsDB
 const LEAGUES = {
     "Premier League": "4328",
     "La Liga": "4335",
@@ -12,10 +11,21 @@ const LEAGUES = {
     "Coupe du Monde": "4429"
 };
 
+// Notre systeme de cotes maison (pas lie a l'API)
+function generateOdds() {
+    return {
+        odds_home: 1.8,
+        odds_draw: 3.0,
+        odds_away: 2.5
+    };
+}
+
 async function fetchLeagueMatches(leagueId, leagueName) {
+    // eventsnextleague donne jusqu'a 15 matchs a venir
     const url = `https://www.thesportsdb.com/api/v1/json/3/eventsnextleague.php?id=${leagueId}`;
     const res = await fetch(url);
     const data = await res.json();
+    const odds = generateOdds();
     return (data.events || []).map(e => ({
         team_home: e.strHomeTeam,
         team_away: e.strAwayTeam,
@@ -23,7 +33,10 @@ async function fetchLeagueMatches(leagueId, leagueName) {
         competition: leagueName,
         score_home: e.intHomeScore !== null ? parseInt(e.intHomeScore) : null,
         score_away: e.intAwayScore !== null ? parseInt(e.intAwayScore) : null,
-        external_id: e.idEvent
+        external_id: e.idEvent,
+        odds_home: odds.odds_home,
+        odds_draw: odds.odds_draw,
+        odds_away: odds.odds_away
     }));
 }
 
@@ -41,7 +54,7 @@ async function upsertMatches(matches) {
     if (!res.ok) {
         console.error("Erreur upsert:", await res.text());
     } else {
-        console.log(`${matches.length} matchs synchronisés.`);
+        console.log(`${matches.length} matchs synchronises.`);
     }
 }
 
@@ -51,7 +64,7 @@ async function run() {
         try {
             const matches = await fetchLeagueMatches(id, name);
             allMatches = allMatches.concat(matches);
-            console.log(`${name}: ${matches.length} matchs trouvés`);
+            console.log(`${name}: ${matches.length} matchs trouves`);
         } catch (err) {
             console.error(`Erreur pour ${name}:`, err.message);
         }
