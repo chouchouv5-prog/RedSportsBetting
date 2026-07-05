@@ -1,5 +1,5 @@
 ---
-title: "Matchs à venir"
+title: "Upcoming Matches"
 date: 2026-07-01
 draft: false
 ---
