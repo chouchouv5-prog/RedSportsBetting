@@ -21,16 +21,21 @@ async function loadResults() {
         return;
     }
 
-    container.innerHTML = matches.map(m => `
+    container.innerHTML = matches.map(m => {
+        const scoreDisplay = (m.score_home !== null && m.score_away !== null)
+            ? `${m.score_home} - ${m.score_away}`
+            : "Score N/A";
+        return `
         <div style="border: 2px solid #0b3d0b; border-radius: 10px; padding: 20px; margin-bottom: 15px; background: #f9f9f9;">
             <p style="color: #555; margin: 0 0 8px 0;">${new Date(m.match_date).toLocaleDateString('en-GB')}</p>
             <div style="display: flex; justify-content: space-between; align-items: center; font-size: 1.3em; font-weight: bold;">
                 <span>${m.team_home}</span>
-                <span style="background: #145214; color: white; padding: 5px 15px; border-radius: 5px;">${m.score_home} - ${m.score_away}</span>
+                <span style="background: #145214; color: white; padding: 5px 15px; border-radius: 5px;">${scoreDisplay}</span>
                 <span>${m.team_away}</span>
             </div>
         </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 function waitForSupabase(callback) {
