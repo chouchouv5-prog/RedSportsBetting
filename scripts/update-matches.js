@@ -20,24 +20,38 @@ function generateOdds() {
     };
 }
 
+function computeStatus(scoreHome, scoreAway, matchDate) {
+    if (scoreHome !== null && scoreAway !== null) return "finished";
+    const now = new Date();
+    const start = new Date(matchDate);
+    const diffMinutes = (now - start) / 60000;
+    if (diffMinutes >= 0 && diffMinutes <= 130) return "live";
+    return "upcoming";
+}
+
 async function fetchLeagueMatches(leagueId, leagueName) {
-    // eventsnextleague donne jusqu'a 15 matchs a venir
     const url = `https://www.thesportsdb.com/api/v1/json/3/eventsnextleague.php?id=${leagueId}`;
     const res = await fetch(url);
     const data = await res.json();
     const odds = generateOdds();
-    return (data.events || []).map(e => ({
-        team_home: e.strHomeTeam,
-        team_away: e.strAwayTeam,
-        match_date: `${e.dateEvent}T${e.strTime || "00:00:00"}`,
-        competition: leagueName,
-        score_home: e.intHomeScore !== null ? parseInt(e.intHomeScore) : null,
-        score_away: e.intAwayScore !== null ? parseInt(e.intAwayScore) : null,
-        external_id: e.idEvent,
-        odds_home: odds.odds_home,
-        odds_draw: odds.odds_draw,
-        odds_away: odds.odds_away
-    }));
+    return (data.events || []).map(e => {
+        const matchDate = `${e.dateEvent}T${e.strTime || "00:00:00"}`;
+        const scoreHome = e.intHomeScore !== null ? parseInt(e.intHomeScore) : null;
+        const scoreAway = e.intAwayScore !== null ? parseInt(e.intAwayScore) : null;
+        return {
+            team_home: e.strHomeTeam,
+            team_away: e.strAwayTeam,
+            match_date: matchDate,
+            competition: leagueName,
+            score_home: scoreHome,
+            score_away: scoreAway,
+            external_id: e.idEvent,
+            odds_home: odds.odds_home,
+            odds_draw: odds.odds_draw,
+            odds_away: odds.odds_away,
+            status: computeStatus(scoreHome, scoreAway, matchDate)
+        };
+    });
 }
 
 async function upsertMatches(matches) {
@@ -75,3 +89,12 @@ async function run() {
 }
 
 run();
+
+function computeStatus(scoreHome, scoreAway, matchDate) {
+    if (scoreHome !== null && scoreAway !== null) return "finished";
+    const now = new Date();
+    const start = new Date(matchDate);
+    const diffMinutes = (now - start) / 60000;
+    if (diffMinutes >= 0 && diffMinutes <= 130) return "live";
+    return "upcoming";
+}
