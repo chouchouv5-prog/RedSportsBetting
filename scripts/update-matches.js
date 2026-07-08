@@ -86,9 +86,8 @@ async function run() {
     if (allMatches.length > 0) {
         await upsertMatches(allMatches);
     }
+    await forceUpdatePastMatches();
 }
-
-run();
 
 function computeStatus(scoreHome, scoreAway, matchDate) {
     if (scoreHome !== null && scoreAway !== null) return "finished";
@@ -97,4 +96,28 @@ function computeStatus(scoreHome, scoreAway, matchDate) {
     const diffMinutes = (now - start) / 60000;
     if (diffMinutes >= 0 && diffMinutes <= 130) return "live";
     return "upcoming";
+}
+
+async function forceUpdatePastMatches() {
+    const now = new Date().toISOString();
+    const cutoff = new Date(Date.now() - 130 * 60000).toISOString();
+
+    const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/matches?match_date=lt.${cutoff}&status=neq.finished`,
+        {
+            method: "PATCH",
+            headers: {
+                "apikey": SUPABASE_KEY,
+                "Authorization": `Bearer ${SUPABASE_KEY}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ status: "finished" })
+        }
+    );
+
+    if (!res.ok) {
+        console.error("Erreur mise a jour matchs passes:", await res.text());
+    } else {
+        console.log("Matchs passes marques finished avec succes.");
+    }
 }
