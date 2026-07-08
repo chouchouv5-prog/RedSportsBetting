@@ -11,7 +11,6 @@ const LEAGUES = {
     "Coupe du Monde": "4429"
 };
 
-// Notre systeme de cotes maison (pas lie a l'API)
 function generateOdds() {
     return {
         odds_home: 1.8,
@@ -29,29 +28,39 @@ function computeStatus(scoreHome, scoreAway, matchDate) {
     return "upcoming";
 }
 
+function mapEvent(e, leagueName, odds) {
+    const matchDate = `${e.dateEvent}T${e.strTime || "00:00:00"}`;
+    const scoreHome = e.intHomeScore !== null && e.intHomeScore !== undefined ? parseInt(e.intHomeScore) : null;
+    const scoreAway = e.intAwayScore !== null && e.intAwayScore !== undefined ? parseInt(e.intAwayScore) : null;
+    return {
+        team_home: e.strHomeTeam,
+        team_away: e.strAwayTeam,
+        match_date: matchDate,
+        competition: leagueName,
+        score_home: scoreHome,
+        score_away: scoreAway,
+        external_id: e.idEvent,
+        odds_home: odds.odds_home,
+        odds_draw: odds.odds_draw,
+        odds_away: odds.odds_away,
+        status: computeStatus(scoreHome, scoreAway, matchDate)
+    };
+}
+
 async function fetchLeagueMatches(leagueId, leagueName) {
-    const url = `https://www.thesportsdb.com/api/v1/json/3/eventsnextleague.php?id=${leagueId}`;
-    const res = await fetch(url);
-    const data = await res.json();
     const odds = generateOdds();
-    return (data.events || []).map(e => {
-        const matchDate = `${e.dateEvent}T${e.strTime || "00:00:00"}`;
-        const scoreHome = e.intHomeScore !== null ? parseInt(e.intHomeScore) : null;
-        const scoreAway = e.intAwayScore !== null ? parseInt(e.intAwayScore) : null;
-        return {
-            team_home: e.strHomeTeam,
-            team_away: e.strAwayTeam,
-            match_date: matchDate,
-            competition: leagueName,
-            score_home: scoreHome,
-            score_away: scoreAway,
-            external_id: e.idEvent,
-            odds_home: odds.odds_home,
-            odds_draw: odds.odds_draw,
-            odds_away: odds.odds_away,
-            status: computeStatus(scoreHome, scoreAway, matchDate)
-        };
-    });
+    const nextUrl = `https://www.thesportsdb.com/api/v1/json/3/eventsnextleague.php?id=${leagueId}`;
+    const pastUrl = `https://www.thesportsdb.com/api/v1/json/3/eventspastleague.php?id=${leagueId}`;
+
+    const [nextRes, pastRes] = await Promise.all([fetch(nextUrl), fetch(pastUrl)]);
+    const nextData = await nextRes.json();
+    const pastData = await pastRes.json();
+
+    const nextEvents = nextData.events || [];
+    const pastEvents = pastData.events || [];
+
+    const allEvents = [...nextEvents, ...pastEvents];
+    return allEvents.map(e => mapEvent(e, leagueName, odds));
 }
 
 async function upsertMatches(matches) {
@@ -72,6 +81,27 @@ async function upsertMatches(matches) {
     }
 }
 
+async function forceUpdatePastMatches() {
+    const cutoff = new Date(Date.now() - 130 * 60000).toISOString();
+    const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/matches?match_date=lt.${cutoff}&status=neq.finished`,
+        {
+            method: "PATCH",
+            headers: {
+                "apikey": SUPABASE_KEY,
+                "Authorization": `Bearer ${SUPABASE_KEY}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ status: "finished" })
+        }
+    );
+    if (!res.ok) {
+        console.error("Erreur mise a jour matchs passes:", await res.text());
+    } else {
+        console.log("Matchs passes marques finished (fallback).");
+    }
+}
+
 async function run() {
     let allMatches = [];
     for (const [name, id] of Object.entries(LEAGUES)) {
@@ -89,35 +119,4 @@ async function run() {
     await forceUpdatePastMatches();
 }
 
-function computeStatus(scoreHome, scoreAway, matchDate) {
-    if (scoreHome !== null && scoreAway !== null) return "finished";
-    const now = new Date();
-    const start = new Date(matchDate);
-    const diffMinutes = (now - start) / 60000;
-    if (diffMinutes >= 0 && diffMinutes <= 130) return "live";
-    return "upcoming";
-}
-
-async function forceUpdatePastMatches() {
-    const now = new Date().toISOString();
-    const cutoff = new Date(Date.now() - 130 * 60000).toISOString();
-
-    const res = await fetch(
-        `${SUPABASE_URL}/rest/v1/matches?match_date=lt.${cutoff}&status=neq.finished`,
-        {
-            method: "PATCH",
-            headers: {
-                "apikey": SUPABASE_KEY,
-                "Authorization": `Bearer ${SUPABASE_KEY}`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ status: "finished" })
-        }
-    );
-
-    if (!res.ok) {
-        console.error("Erreur mise a jour matchs passes:", await res.text());
-    } else {
-        console.log("Matchs passes marques finished avec succes.");
-    }
-}
+run();
