@@ -8,7 +8,7 @@ const LEAGUES = {
     "Ligue 1": "4334",
     "Serie A": "4332",
     "Bundesliga": "4331",
-    "Coupe du Monde": "4429"
+    "world Cup 2026": "4429"
 };
 
 function generateOdds() {

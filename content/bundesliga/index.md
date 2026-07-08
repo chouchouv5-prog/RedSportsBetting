@@ -10,5 +10,5 @@ draft: false
 <div id="recent-results-container">Loading...</div>
 
 <script>
-waitForSupabaseAndLoad('Coupe du Monde');
+waitForSupabaseAndLoad('Bundesliga');
 </script>
