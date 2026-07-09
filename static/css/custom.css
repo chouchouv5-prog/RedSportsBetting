@@ -1,19 +1,17 @@
-/* ===== THEME VSB1 - Sky blue palette (accessible, high-contrast) ===== */
+/* ===== THEME VSB1 - Modern Sport Betting ===== */
 
 :root{
-  --bg-surface: #eaf8ff; /* very light sky */
-  --bg-page: #ffffff; /* card background */
-  --text-default: #072033; /* dark navy for text */
-  --muted: #4b6b75;
-  --primary: #009fe3; /* bright sky blue */
-  --primary-dark: #007bb3;
-  --accent: #00c2ff; /* lighter accent */
-  --accent-2: #6ec7ff;
-  --header-bg: #013a63; /* deep blue header */
-  --sidebar-bg: #01293f; /* dark navy for sidebar */
-  --cta: #ffb703; /* warm accent for calls-to-action */
-  --danger: #e63946;
-  --success: #19a974;
+  --page-bg: #f4f6f8;
+  --card-bg: #ffffff;
+  --text-dark: #1a1a1a;
+  --text-muted: #6b7280;
+  --header-bg: #14171f;
+  --sidebar-bg: #14171f;
+  --primary-green: #0d8f4f;
+  --primary-green-dark: #0a6e3d;
+  --accent-gold: #f5a623;
+  --live-red: #e63946;
+  --border-light: #e5e7eb;
 }
 
 html, body {
@@ -21,142 +19,160 @@ html, body {
 }
 
 body {
-    background-color: var(--bg-surface);
-    color: var(--text-default);
+    background-color: var(--page-bg);
+    color: var(--text-dark);
     font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    line-height: 1.45;
+    line-height: 1.5;
     margin: 0;
 }
 
-/* Header */
+/* ===== HEADER (bandeau titre en haut de chaque page) ===== */
 header, .site-header, .page-header {
-    background: linear-gradient(180deg, var(--header-bg), #004a80) !important;
-    color: white;
-    border-bottom: 3px solid rgba(255,183,3,0.15);
-    box-shadow: 0 6px 18px rgba(2,18,33,0.18);
+    background: var(--header-bg) !important;
+    color: #ffffff !important;
+    border-bottom: 3px solid var(--accent-gold);
 }
-
-/* Brand */
+header h1, header h2, header h3,
+.site-header h1, .site-header h2, .site-header h3,
+.page-header h1, .page-header h2, .page-header h3 {
+    color: #ffffff !important;
+}
+header p, .site-header p, .page-header p {
+    color: #c9ccd3 !important;
+}
 header h1 a, .site-navigation a.brand {
-    color: var(--accent) !important;
+    color: var(--accent-gold) !important;
     font-weight: 700;
     text-decoration: none;
 }
 
-/* Navigation links */
+/* ===== SIDEBAR ===== */
+#sidebar, .sidebar, .site-sidebar {
+    background: var(--sidebar-bg) !important;
+    color: #ffffff !important;
+    min-width: 220px;
+}
+#sidebar a, .sidebar a, .site-sidebar a {
+    color: #d7dae0 !important;
+}
+#sidebar a:hover, .sidebar a:hover { color: var(--accent-gold) !important; }
+#sidebar a.active, .sidebar a.active { color: var(--primary-green) !important; font-weight: 600; }
+
+/* ===== NAVIGATION (dans le header si présente) ===== */
 nav a, .site-navigation a {
-    color: rgba(255,255,255,0.95) !important;
+    color: #ffffff !important;
 }
 nav a:hover, .site-navigation a:hover {
-    color: var(--accent) !important;
+    color: var(--accent-gold) !important;
 }
 
-/* Main content card */
+/* ===== MAIN CONTENT (fond blanc/carte) ===== */
 main {
-    background: var(--bg-page);
-    color: var(--text-default);
-    margin: 28px auto;
+    background: var(--card-bg);
+    color: var(--text-dark);
+    margin: 24px auto;
     padding: 28px;
     max-width: 1100px;
     border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(2,18,33,0.06);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+main h1, main h2, main h3 {
+    color: var(--text-dark) !important;
+}
+main p {
+    color: var(--text-dark);
 }
 
-/* Links */
-a { color: var(--primary); }
-a:hover { color: var(--primary-dark); text-decoration: underline; }
+/* ===== LINKS ===== */
+a { color: var(--primary-green); }
+a:hover { color: var(--primary-green-dark); text-decoration: underline; }
 
-/* Buttons */
+/* ===== BUTTONS GÉNÉRIQUES ===== */
 button, .btn {
-    background: var(--primary);
-    color: white;
+    background: var(--primary-green);
+    color: #ffffff !important;
     border: none;
     font-weight: 600;
     border-radius: 8px;
     cursor: pointer;
     padding: 10px 14px;
-    transition: transform 0.12s ease, box-shadow 0.12s ease;
+    transition: transform 0.12s ease;
 }
-button:hover, .btn:hover { transform: translateY(-1px); background: var(--primary-dark); box-shadow: 0 6px 18px rgba(0,125,179,0.12); }
-
-button.secondary {
-    background: var(--accent-2);
-    color: var(--text-default);
+button:hover, .btn:hover {
+    background: var(--primary-green-dark);
+    transform: translateY(-1px);
 }
 
-/* CTA (important actions) */
-.btn-cta { background: var(--cta); color: #042028; }
-.btn-cta:hover { filter: brightness(0.95); }
-
-/* Sidebar readability */
-#sidebar, .sidebar, .site-sidebar {
-    background: var(--sidebar-bg) !important;
-    color: white;
-    min-width: 220px;
-}
-#sidebar a, .sidebar a { color: rgba(255,255,255,0.95) !important; }
-#sidebar a:hover { color: var(--cta) !important; }
-
-/* Cards and match boxes */
+/* ===== CARTES DE MATCH ===== */
 .match-card, .card {
-    background: linear-gradient(180deg, #ffffff, #f6fbff);
-    border: 1px solid rgba(3,54,86,0.06);
+    background: var(--card-bg);
+    border: 1px solid var(--border-light);
     padding: 18px;
     border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.match-card h3, .card h3 {
+    color: var(--text-dark) !important;
+    margin: 0 0 8px 0;
+}
+.match-card p, .card p {
+    color: var(--text-muted) !important;
 }
 
-.match-card h3 { margin: 0 0 8px 0; color: var(--text-default); }
-.match-card p { color: var(--muted); margin: 0; }
-
-/* Live badge */
+/* ===== BADGE LIVE ===== */
 .badge-live {
-    background: var(--danger);
-    color: white;
+    background: var(--live-red);
+    color: #ffffff !important;
     padding: 3px 10px;
     border-radius: 6px;
     font-weight: 700;
     font-size: 0.85em;
 }
 
-/* Recent results score pill */
+/* ===== SCORE PILL (résultats récents) ===== */
 .score-pill {
-    background: var(--primary);
-    color: white;
+    background: var(--primary-green);
+    color: #ffffff !important;
     padding: 6px 12px;
     border-radius: 999px;
     font-weight: 700;
 }
 
-/* Modal styling (bets) */
-#bet-modal > div { background: linear-gradient(180deg,#ffffff,#f8fdff); border-radius: 12px; }
-#bet-modal input[type=number] { border: 1px solid rgba(2,18,33,0.06); border-radius: 8px; padding: 10px; width: 100%; }
+/* ===== MODAL DE PARI ===== */
+#bet-modal > div {
+    background: var(--card-bg);
+    border-radius: 12px;
+    color: var(--text-dark);
+}
+#bet-modal h3, #bet-modal p {
+    color: var(--text-dark) !important;
+}
+#bet-modal input[type=number] {
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    padding: 10px;
+    width: 100%;
+    color: var(--text-dark);
+}
 
-/* Tables and lists */
+/* ===== TABLEAUX ===== */
 table { border-collapse: collapse; width: 100%; }
-td, th { padding: 10px; border-bottom: 1px solid rgba(2,18,33,0.04); }
+td, th { padding: 10px; border-bottom: 1px solid var(--border-light); color: var(--text-dark); }
 
-/* Footer */
-footer { background: transparent; color: var(--muted); padding: 24px 0; }
+/* ===== FOOTER ===== */
+footer { background: transparent; color: var(--text-muted); padding: 24px 0; }
 
-/* Code blocks contrast */
-pre, code { background: #022b3a; color: #e6fbff; }
-
-/* Accessibility helpers */
-.visually-hidden { position: absolute !important; left: -10000px !important; top: auto !important; width: 1px !important; height: 1px !important; overflow: hidden; }
-
-/* Responsive tweaks */
+/* ===== RESPONSIVE ===== */
 @media (max-width: 900px) {
-    main { margin: 18px 12px; padding: 18px; }
+    main { margin: 16px 12px; padding: 18px; }
     #sidebar { display: none; }
 }
 
-/* Small polish */
-h1, h2, h3 { color: var(--text-default); }
-
-/* Ensure form elements have good contrast */
-input, textarea, select { border-radius: 8px; border: 1px solid rgba(2,18,33,0.06); padding: 10px; }
-
-/* Ensure high contrast on small text */
-small, .small { color: var(--muted); }
+/* ===== FORMULAIRES ===== */
+input, textarea, select {
+    border-radius: 8px;
+    border: 1px solid var(--border-light);
+    padding: 10px;
+    color: var(--text-dark);
+}
