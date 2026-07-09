@@ -1,6 +1,6 @@
-<nav class="pv3 ph3 ph4-ns" role="navigation">
+<nav class="pv3 ph3 ph4-ns site-navigation" role="navigation">
   <div class="flex-l center items-center justify-between">
-    <a href="{{ .Site.Home.RelPermalink }}" class="f3 fw2 hover-white white-90 dib no-underline">
+    <a href="{{ .Site.Home.RelPermalink }}" class="f3 fw2 hover-white brand dib no-underline">
       {{ with .Site.Params.site_logo }}
         <img src="{{ urls.RelURL . }}" class="w100 mw5-ns" alt="{{ $.Site.Title }}" />
       {{ else }}
@@ -13,7 +13,7 @@
         <ul class="{{ compare.Conditional (compare.Eq $.Site.Language.Direction "rtl") "pr0 ml3" "pl0 mr3" }}">
           {{ range .Site.Menus.main }}
           <li class="list f5 f4-ns fw4 dib {{ compare.Conditional (compare.Eq $.Site.Language.Direction "rtl") "pl3" "pr3" }}">
-            <a class="hover-white white-90 no-underline" href="{{ .URL }}" title="{{ lang.Translate "pageTitle" . }}">
+            <a class="nav-link no-underline" href="{{ .URL }}" title="{{ lang.Translate "pageTitle" . }}">
               {{ .Name }}
             </a>
           </li>
