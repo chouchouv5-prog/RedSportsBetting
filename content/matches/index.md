@@ -49,13 +49,13 @@ async function loadMatches() {
             </div>
             <p style="color: #555;">${new Date(m.match_date).toLocaleString('fr-FR')}</p>
             <div style="display: flex; gap: 10px; margin-top: 10px;">
-                <button onclick="openBetModal(${m.id}, '${m.team_home} vs ${m.team_away}', 'home', ${m.odds_home})" style="flex:1; padding: 10px; background: #145214; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                <button onclick="openBetModal(${m.id}, '${m.team_home} vs ${m.team_away}', 'home', ${m.odds_home})" style="flex:1; padding: 10px; background: #145214; color: white; border: none; border-radius:8px; font-weight:bold;">
                     ${m.team_home}<br>${m.odds_home}
                 </button>
-                <button onclick="openBetModal(${m.id}, '${m.team_home} vs ${m.team_away}', 'draw', ${m.odds_draw})" style="flex:1; padding: 10px; background: #666; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                <button onclick="openBetModal(${m.id}, '${m.team_home} vs ${m.team_away}', 'draw', ${m.odds_draw})" style="flex:1; padding: 10px; background: #666; color: white; border: none; border-radius:8px; font-weight:bold;">
                     Nul<br>${m.odds_draw}
                 </button>
-                <button onclick="openBetModal(${m.id}, '${m.team_home} vs ${m.team_away}', 'away', ${m.odds_away})" style="flex:1; padding: 10px; background: #145214; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                <button onclick="openBetModal(${m.id}, '${m.team_home} vs ${m.team_away}', 'away', ${m.odds_away})" style="flex:1; padding: 10px; background: #145214; color: white; border: none; border-radius:8px; font-weight:bold;">
                     ${m.team_away}<br>${m.odds_away}
                 </button>
             </div>
@@ -125,5 +125,14 @@ async function confirmBet() {
     location.reload();
 }
 
-loadMatches();
+// Au lieu d'appeler directement loadMatches(), on attend que supabaseClient soit initialisé
+function waitForSupabaseAndLoadMatches() {
+    if (typeof supabaseClient !== 'undefined') {
+        loadMatches();
+    } else {
+        setTimeout(waitForSupabaseAndLoadMatches, 100);
+    }
+}
+
+waitForSupabaseAndLoadMatches();
 </script>
