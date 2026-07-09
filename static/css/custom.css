@@ -1,76 +1,162 @@
-/* ===== THEME VSB1 - Nouvelle palette ===== */
+/* ===== THEME VSB1 - Sky blue palette (accessible, high-contrast) ===== */
+
+:root{
+  --bg-surface: #eaf8ff; /* very light sky */
+  --bg-page: #ffffff; /* card background */
+  --text-default: #072033; /* dark navy for text */
+  --muted: #4b6b75;
+  --primary: #009fe3; /* bright sky blue */
+  --primary-dark: #007bb3;
+  --accent: #00c2ff; /* lighter accent */
+  --accent-2: #6ec7ff;
+  --header-bg: #013a63; /* deep blue header */
+  --sidebar-bg: #01293f; /* dark navy for sidebar */
+  --cta: #ffb703; /* warm accent for calls-to-action */
+  --danger: #e63946;
+  --success: #19a974;
+}
+
+html, body {
+    height: 100%;
+}
 
 body {
-    background-color: #1fc0e8;
-    color: #0F1419;
-    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: var(--bg-surface);
+    color: var(--text-default);
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.45;
+    margin: 0;
 }
 
 /* Header */
-header {
-    background: #0D1B2A !important;
-    border-bottom: 4px solid #f2b705 !important;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+header, .site-header, .page-header {
+    background: linear-gradient(180deg, var(--header-bg), #004a80) !important;
+    color: white;
+    border-bottom: 3px solid rgba(255,183,3,0.15);
+    box-shadow: 0 6px 18px rgba(2,18,33,0.18);
 }
 
-header h1 a {
-    color: #f2b705 !important;
-    font-weight: bold;
+/* Brand */
+header h1 a, .site-navigation a.brand {
+    color: var(--accent) !important;
+    font-weight: 700;
+    text-decoration: none;
 }
 
-/* Boutons génériques */
-button {
-    background: #1D9BF0;
+/* Navigation links */
+nav a, .site-navigation a {
+    color: rgba(255,255,255,0.95) !important;
+}
+nav a:hover, .site-navigation a:hover {
+    color: var(--accent) !important;
+}
+
+/* Main content card */
+main {
+    background: var(--bg-page);
+    color: var(--text-default);
+    margin: 28px auto;
+    padding: 28px;
+    max-width: 1100px;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(2,18,33,0.06);
+}
+
+/* Links */
+a { color: var(--primary); }
+a:hover { color: var(--primary-dark); text-decoration: underline; }
+
+/* Buttons */
+button, .btn {
+    background: var(--primary);
     color: white;
     border: none;
-    font-weight: bold;
+    font-weight: 600;
     border-radius: 8px;
     cursor: pointer;
-    transition: transform 0.15s ease;
+    padding: 10px 14px;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+button:hover, .btn:hover { transform: translateY(-1px); background: var(--primary-dark); box-shadow: 0 6px 18px rgba(0,125,179,0.12); }
+
+button.secondary {
+    background: var(--accent-2);
+    color: var(--text-default);
 }
 
-button:hover {
-    transform: scale(1.03);
-    background: #1a8cd8;
-}
+/* CTA (important actions) */
+.btn-cta { background: var(--cta); color: #042028; }
+.btn-cta:hover { filter: brightness(0.95); }
 
-/* Contenu principal */
-main {
-    background: #ffffff;
-    color: #0F1419;
-    margin: 30px auto;
-    padding: 30px;
-    max-width: 900px;
+/* Sidebar readability */
+#sidebar, .sidebar, .site-sidebar {
+    background: var(--sidebar-bg) !important;
+    color: white;
+    min-width: 220px;
+}
+#sidebar a, .sidebar a { color: rgba(255,255,255,0.95) !important; }
+#sidebar a:hover { color: var(--cta) !important; }
+
+/* Cards and match boxes */
+.match-card, .card {
+    background: linear-gradient(180deg, #ffffff, #f6fbff);
+    border: 1px solid rgba(3,54,86,0.06);
+    padding: 18px;
     border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
 }
 
-main a {
-    color: #1D9BF0;
+.match-card h3 { margin: 0 0 8px 0; color: var(--text-default); }
+.match-card p { color: var(--muted); margin: 0; }
+
+/* Live badge */
+.badge-live {
+    background: var(--danger);
+    color: white;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.85em;
 }
 
-/* Lien de profil dans le header */
-#user-section a {
-    color: #f2b705 !important;
-    font-weight: bold;
+/* Recent results score pill */
+.score-pill {
+    background: var(--primary);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-weight: 700;
 }
 
-/* Rond ballon décoratif dans le titre */
-h1 a::before {
-    content: "⚽ ";
+/* Modal styling (bets) */
+#bet-modal > div { background: linear-gradient(180deg,#ffffff,#f8fdff); border-radius: 12px; }
+#bet-modal input[type=number] { border: 1px solid rgba(2,18,33,0.06); border-radius: 8px; padding: 10px; width: 100%; }
+
+/* Tables and lists */
+table { border-collapse: collapse; width: 100%; }
+td, th { padding: 10px; border-bottom: 1px solid rgba(2,18,33,0.04); }
+
+/* Footer */
+footer { background: transparent; color: var(--muted); padding: 24px 0; }
+
+/* Code blocks contrast */
+pre, code { background: #022b3a; color: #e6fbff; }
+
+/* Accessibility helpers */
+.visually-hidden { position: absolute !important; left: -10000px !important; top: auto !important; width: 1px !important; height: 1px !important; overflow: hidden; }
+
+/* Responsive tweaks */
+@media (max-width: 900px) {
+    main { margin: 18px 12px; padding: 18px; }
+    #sidebar { display: none; }
 }
 
-/* Fix lisibilité sidebar */
-#sidebar a {
-    color: #ffffff !important;
-    opacity: 1 !important;
-    font-weight: 500;
-}
+/* Small polish */
+h1, h2, h3 { color: var(--text-default); }
 
-#sidebar a:hover {
-    color: #f2b705 !important;
-}
+/* Ensure form elements have good contrast */
+input, textarea, select { border-radius: 8px; border: 1px solid rgba(2,18,33,0.06); padding: 10px; }
 
-#sidebar span {
-    opacity: 1 !important;
-}
+/* Ensure high contrast on small text */
+small, .small { color: var(--muted); }
