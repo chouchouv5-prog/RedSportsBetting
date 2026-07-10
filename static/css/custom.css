@@ -118,3 +118,34 @@ input, textarea, select {
     padding: 10px;
     color: var(--text-dark);
 }
+
+@media (max-width: 900px) {
+    #mobile-menu-btn { display: block !important; }
+    #bottom-nav { display: flex !important; }
+
+    #sidebar {
+        display: block !important;
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        transform: translateX(-100%);
+        transition: transform 0.25s ease;
+        z-index: 1000;
+    }
+    #sidebar.open {
+        transform: translateX(0);
+    }
+    #sidebar-overlay.visible {
+        display: block !important;
+    }
+
+    main {
+        margin: 16px 12px 80px 12px !important;
+        padding: 18px !important;
+    }
+
+    header {
+        padding-left: 65px !important;
+    }
+}
