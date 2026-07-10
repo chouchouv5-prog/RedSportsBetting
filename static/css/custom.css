@@ -5,8 +5,7 @@
   --card-bg: #ffffff;
   --text-dark: #1a1a1a;
   --text-muted: #6b7280;
-  --header-bg: #14171f;
-  --sidebar-bg: #14171f;
+  --sidebar-bg: #0D1B2A;
   --primary-green: #0d8f4f;
   --primary-green-dark: #0a6e3d;
   --accent-gold: #f5a623;
@@ -14,9 +13,7 @@
   --border-light: #e5e7eb;
 }
 
-html, body {
-    height: 100%;
-}
+html, body { height: 100%; }
 
 body {
     background-color: var(--page-bg);
@@ -27,47 +24,27 @@ body {
     margin: 0;
 }
 
-/* ===== HEADER (bandeau titre en haut de chaque page) ===== */
-header, .site-header, .page-header {
-    background: var(--header-bg) !important;
+/* ===== SIDEBAR (déjà stylée en inline, on renforce juste les liens) ===== */
+#sidebar a {
     color: #ffffff !important;
-    border-bottom: 3px solid var(--accent-gold);
+    transition: color 0.15s ease;
 }
-header h1, header h2, header h3,
-.site-header h1, .site-header h2, .site-header h3,
-.page-header h1, .page-header h2, .page-header h3 {
-    color: #ffffff !important;
+#sidebar a:hover { color: var(--accent-gold) !important; }
+
+/* ===== BANDEAU TITRE DE PAGE (le <header> généré par Hugo/Ananke, PAS le header du site) ===== */
+/* Ce header n'a pas de fond défini par le thème : on lui donne un fond clair qui matche la carte "main" */
+main header, article header {
+    background: transparent;
 }
-header p, .site-header p, .page-header p {
-    color: #c9ccd3 !important;
+main header h1, article header h1,
+main header div.f2, article header div.f2 {
+    color: var(--text-dark) !important;
 }
-header h1 a, .site-navigation a.brand {
-    color: var(--accent-gold) !important;
-    font-weight: 700;
-    text-decoration: none;
+main header time, article header time {
+    color: var(--text-muted) !important;
 }
 
-/* ===== SIDEBAR ===== */
-#sidebar, .sidebar, .site-sidebar {
-    background: var(--sidebar-bg) !important;
-    color: #ffffff !important;
-    min-width: 220px;
-}
-#sidebar a, .sidebar a, .site-sidebar a {
-    color: #d7dae0 !important;
-}
-#sidebar a:hover, .sidebar a:hover { color: var(--accent-gold) !important; }
-#sidebar a.active, .sidebar a.active { color: var(--primary-green) !important; font-weight: 600; }
-
-/* ===== NAVIGATION (dans le header si présente) ===== */
-nav a, .site-navigation a {
-    color: #ffffff !important;
-}
-nav a:hover, .site-navigation a:hover {
-    color: var(--accent-gold) !important;
-}
-
-/* ===== MAIN CONTENT (fond blanc/carte) ===== */
+/* ===== MAIN CONTENT (carte blanche) ===== */
 main {
     background: var(--card-bg);
     color: var(--text-dark);
@@ -77,32 +54,11 @@ main {
     border-radius: 12px;
     box-shadow: 0 2px 12px rgba(0,0,0,0.06);
 }
-main h1, main h2, main h3 {
-    color: var(--text-dark) !important;
-}
-main p {
-    color: var(--text-dark);
-}
+main p { color: var(--text-dark); }
 
-/* ===== LINKS ===== */
+/* ===== LIENS ===== */
 a { color: var(--primary-green); }
 a:hover { color: var(--primary-green-dark); text-decoration: underline; }
-
-/* ===== BUTTONS GÉNÉRIQUES ===== */
-button, .btn {
-    background: var(--primary-green);
-    color: #ffffff !important;
-    border: none;
-    font-weight: 600;
-    border-radius: 8px;
-    cursor: pointer;
-    padding: 10px 14px;
-    transition: transform 0.12s ease;
-}
-button:hover, .btn:hover {
-    background: var(--primary-green-dark);
-    transform: translateY(-1px);
-}
 
 /* ===== CARTES DE MATCH ===== */
 .match-card, .card {
@@ -112,13 +68,8 @@ button:hover, .btn:hover {
     border-radius: 12px;
     box-shadow: 0 1px 4px rgba(0,0,0,0.04);
 }
-.match-card h3, .card h3 {
-    color: var(--text-dark) !important;
-    margin: 0 0 8px 0;
-}
-.match-card p, .card p {
-    color: var(--text-muted) !important;
-}
+.match-card h3, .card h3 { color: var(--text-dark) !important; margin: 0 0 8px 0; }
+.match-card p, .card p { color: var(--text-muted) !important; }
 
 /* ===== BADGE LIVE ===== */
 .badge-live {
@@ -130,7 +81,7 @@ button:hover, .btn:hover {
     font-size: 0.85em;
 }
 
-/* ===== SCORE PILL (résultats récents) ===== */
+/* ===== SCORE PILL ===== */
 .score-pill {
     background: var(--primary-green);
     color: #ffffff !important;
@@ -140,14 +91,8 @@ button:hover, .btn:hover {
 }
 
 /* ===== MODAL DE PARI ===== */
-#bet-modal > div {
-    background: var(--card-bg);
-    border-radius: 12px;
-    color: var(--text-dark);
-}
-#bet-modal h3, #bet-modal p {
-    color: var(--text-dark) !important;
-}
+#bet-modal > div { background: var(--card-bg); color: var(--text-dark); border-radius: 12px; }
+#bet-modal h3, #bet-modal p { color: var(--text-dark) !important; }
 #bet-modal input[type=number] {
     border: 1px solid var(--border-light);
     border-radius: 8px;
@@ -159,9 +104,6 @@ button:hover, .btn:hover {
 /* ===== TABLEAUX ===== */
 table { border-collapse: collapse; width: 100%; }
 td, th { padding: 10px; border-bottom: 1px solid var(--border-light); color: var(--text-dark); }
-
-/* ===== FOOTER ===== */
-footer { background: transparent; color: var(--text-muted); padding: 24px 0; }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 900px) {
