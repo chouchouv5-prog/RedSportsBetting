@@ -1,66 +1,63 @@
 // scripts/update-matches.js
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const FOOTBALL_DATA_KEY = process.env.FOOTBALL_DATA_API_KEY;
 
-const LEAGUES = {
-    "Premier League": "4328",
-    "La Liga": "4335",
-    "Ligue 1": "4334",
-    "Serie A": "4332",
-    "Bundesliga": "4331",
-    "Coupe du Monde": "4429"
+const COMPETITIONS = {
+    "Premier League": "PL",
+    "La Liga": "PD",
+    "Ligue 1": "FL1",
+    "Serie A": "SA",
+    "Bundesliga": "BL1",
+    "Coupe du Monde": "WC"
 };
 
 function generateOdds() {
-    return {
-        odds_home: 1.8,
-        odds_draw: 3.0,
-        odds_away: 2.5
-    };
+    return { odds_home: 1.8, odds_draw: 3.0, odds_away: 2.5 };
 }
 
-function computeStatus(scoreHome, scoreAway, matchDate) {
-    if (scoreHome !== null && scoreAway !== null) return "finished";
-    const now = new Date();
-    const start = new Date(matchDate);
-    const diffMinutes = (now - start) / 60000;
-    if (diffMinutes >= 0 && diffMinutes <= 130) return "live";
+function mapStatus(apiStatus) {
+    if (apiStatus === "FINISHED") return "finished";
+    if (apiStatus === "IN_PLAY" || apiStatus === "PAUSED" || apiStatus === "LIVE") return "live";
     return "upcoming";
 }
 
-function mapEvent(e, leagueName, odds) {
-    const matchDate = `${e.dateEvent}T${e.strTime || "00:00:00"}`;
-    const scoreHome = e.intHomeScore !== null && e.intHomeScore !== undefined ? parseInt(e.intHomeScore) : null;
-    const scoreAway = e.intAwayScore !== null && e.intAwayScore !== undefined ? parseInt(e.intAwayScore) : null;
+function mapMatch(m, competitionName, odds) {
+    const status = mapStatus(m.status);
+    const scoreHome = status === "finished" ? m.score.fullTime.home : null;
+    const scoreAway = status === "finished" ? m.score.fullTime.away : null;
+
     return {
-        team_home: e.strHomeTeam,
-        team_away: e.strAwayTeam,
-        match_date: matchDate,
-        competition: leagueName,
+        team_home: m.homeTeam.name,
+        team_away: m.awayTeam.name,
+        match_date: m.utcDate,
+        competition: competitionName,
         score_home: scoreHome,
         score_away: scoreAway,
-        external_id: e.idEvent,
+        external_id: `fd_${m.id}`,
         odds_home: odds.odds_home,
         odds_draw: odds.odds_draw,
         odds_away: odds.odds_away,
-        status: computeStatus(scoreHome, scoreAway, matchDate)
+        status: status
     };
 }
 
-async function fetchLeagueMatches(leagueId, leagueName) {
+async function fetchCompetitionMatches(code, competitionName) {
     const odds = generateOdds();
-    const nextUrl = `https://www.thesportsdb.com/api/v1/json/3/eventsnextleague.php?id=${leagueId}`;
-    const pastUrl = `https://www.thesportsdb.com/api/v1/json/3/eventspastleague.php?id=${leagueId}`;
+    const url = `https://api.football-data.org/v4/competitions/${code}/matches`;
 
-    const [nextRes, pastRes] = await Promise.all([fetch(nextUrl), fetch(pastUrl)]);
-    const nextData = await nextRes.json();
-    const pastData = await pastRes.json();
+    const res = await fetch(url, {
+        headers: { "X-Auth-Token": FOOTBALL_DATA_KEY }
+    });
 
-    const nextEvents = nextData.events || [];
-    const pastEvents = pastData.events || [];
+    if (!res.ok) {
+        console.error(`Erreur API pour ${competitionName}:`, res.status, await res.text());
+        return [];
+    }
 
-    const allEvents = [...nextEvents, ...pastEvents];
-    return allEvents.map(e => mapEvent(e, leagueName, odds));
+    const data = await res.json();
+    const matches = data.matches || [];
+    return matches.map(m => mapMatch(m, competitionName, odds));
 }
 
 async function upsertMatches(matches) {
@@ -81,34 +78,14 @@ async function upsertMatches(matches) {
     }
 }
 
-async function forceUpdatePastMatches() {
-    const cutoff = new Date(Date.now() - 130 * 60000).toISOString();
-    const res = await fetch(
-        `${SUPABASE_URL}/rest/v1/matches?match_date=lt.${cutoff}&status=neq.finished`,
-        {
-            method: "PATCH",
-            headers: {
-                "apikey": SUPABASE_KEY,
-                "Authorization": `Bearer ${SUPABASE_KEY}`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ status: "finished" })
-        }
-    );
-    if (!res.ok) {
-        console.error("Erreur mise a jour matchs passes:", await res.text());
-    } else {
-        console.log("Matchs passes marques finished (fallback).");
-    }
-}
-
 async function run() {
     let allMatches = [];
-    for (const [name, id] of Object.entries(LEAGUES)) {
+    for (const [name, code] of Object.entries(COMPETITIONS)) {
         try {
-            const matches = await fetchLeagueMatches(id, name);
+            const matches = await fetchCompetitionMatches(code, name);
             allMatches = allMatches.concat(matches);
             console.log(`${name}: ${matches.length} matchs trouves`);
+            await new Promise(r => setTimeout(r, 6500));
         } catch (err) {
             console.error(`Erreur pour ${name}:`, err.message);
         }
@@ -116,7 +93,6 @@ async function run() {
     if (allMatches.length > 0) {
         await upsertMatches(allMatches);
     }
-    await forceUpdatePastMatches();
 }
 
 run();
