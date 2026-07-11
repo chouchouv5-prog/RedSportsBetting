@@ -73,28 +73,6 @@ async function loadProfile() {
     loadRecentBets(user.id);
 }
 
-    const { data: profile } = await supabaseClient
-        .from('profiles')
-        .select('*')
-        .eq('user_id', user.id)
-        .single();
-
-    const genderIcons = { male: '♂️', female: '♀️', other: '⚧️' };
-    const genderIcon = profile && profile.gender ? genderIcons[profile.gender] || '' : '';
-    const displayName = profile && profile.username ? profile.username : user.email.split('@')[0];
-
-    container.innerHTML = `
-        <div style="text-align:center; margin-bottom:15px;">${getAvatarHTML(displayName, 80)}</div>
-        <p style="text-align:center;"><a href="/settings/">⚙️ Account Settings</a></p>
-        ${profile && profile.username ? `<p><strong>Username:</strong> ${profile.username}</p>` : ''}
-        ${profile && (profile.first_name || profile.last_name) ? `<p><strong>Name:</strong> ${profile.first_name || ''} ${profile.last_name || ''} ${genderIcon}</p>` : ''}
-        <p><strong>VSB Coins:</strong> <span style="color: gold; font-size: 1.8em;">${profile ? profile.vsb_coins : 1000}</span></p>
-        <button onclick="logout()" style="padding: 12px 24px; background: #ff4444; color: white; border: none; border-radius: 5px; cursor: pointer;">Logout</button>
-    `;
-
-    loadRecentBets(user.id);
-}
-
 async function loadRecentBets(userId) {
     const betsContainer = document.getElementById('profile-bets');
 
