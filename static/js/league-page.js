@@ -77,7 +77,7 @@ async function loadRecentResults(competitionName) {
 async function openBetModal(matchId, matchTitle, choice, odds) {
     const { data: { user } } = await supabaseClient.auth.getUser();
     if (!user) {
-        alert("Connecte-toi d'abord pour parier !");
+        alert("Please log in first to place a bet!");
         return;
     }
     currentMatchId = matchId;
@@ -96,7 +96,7 @@ function closeBetModal() {
 async function confirmBet() {
     const amount = parseFloat(document.getElementById('bet-amount').value);
     if (!amount || amount <= 0) {
-        alert("Entre un montant valide.");
+        alert("Please enter a valid amount.");
         return;
     }
 
@@ -109,7 +109,7 @@ async function confirmBet() {
         .single();
 
     if (!profile || profile.vsb_coins < amount) {
-        alert("Tu n'as pas assez de coins !");
+        alert("You don't have enough coins!");
         return;
     }
 
@@ -122,7 +122,7 @@ async function confirmBet() {
     });
 
     if (betError) {
-        alert("Erreur : " + betError.message);
+        alert("Error: " + betError.message);
         return;
     }
 
@@ -131,7 +131,7 @@ async function confirmBet() {
         .update({ vsb_coins: profile.vsb_coins - amount })
         .eq('user_id', user.id);
 
-    alert("Pari enregistré !");
+    alert("Bet placed successfully!");
     closeBetModal();
     location.reload();
 }
