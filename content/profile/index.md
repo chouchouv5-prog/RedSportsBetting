@@ -46,6 +46,7 @@ async function loadProfile() {
         <p style="text-align:center;"><a href="/settings/">⚙️ Account Settings</a></p>
         ${profile && profile.username ? `<p><strong>Username:</strong> ${profile.username}</p>` : ''}
         ${profile && (profile.first_name || profile.last_name) ? `<p><strong>Name:</strong> ${profile.first_name || ''} ${profile.last_name || ''} ${genderIcon}</p>` : ''}
+        ${profile && profile.favorite_team ? `<p><strong>Favorite Team:</strong> ⭐ ${profile.favorite_team}</p>` : ''}
         <p><strong>VSB Coins:</strong> <span style="color: gold; font-size: 1.8em;">${profile ? profile.vsb_coins : 1000}</span></p>
 
         <div style="display:flex; gap:10px; margin: 20px 0; flex-wrap: wrap;">
