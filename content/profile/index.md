@@ -30,6 +30,59 @@ async function loadProfile() {
     const genderIcon = profile && profile.gender ? genderIcons[profile.gender] || '' : '';
     const displayName = profile && profile.username ? profile.username : user.email.split('@')[0];
 
+    const { data: allBets } = await supabaseClient
+        .from('bets')
+        .select('status')
+        .eq('user_id', user.id);
+
+    const totalBets = allBets ? allBets.length : 0;
+    const wonBets = allBets ? allBets.filter(b => b.status === 'won' || b.status === 'won_paid').length : 0;
+    const lostBets = allBets ? allBets.filter(b => b.status === 'lost').length : 0;
+    const settledBets = wonBets + lostBets;
+    const winRate = settledBets > 0 ? Math.round((wonBets / settledBets) * 100) : 0;
+
+    container.innerHTML = `
+        <div style="text-align:center; margin-bottom:15px;">${getAvatarHTML(displayName, 80)}</div>
+        <p style="text-align:center;"><a href="/settings/">⚙️ Account Settings</a></p>
+        ${profile && profile.username ? `<p><strong>Username:</strong> ${profile.username}</p>` : ''}
+        ${profile && (profile.first_name || profile.last_name) ? `<p><strong>Name:</strong> ${profile.first_name || ''} ${profile.last_name || ''} ${genderIcon}</p>` : ''}
+        <p><strong>VSB Coins:</strong> <span style="color: gold; font-size: 1.8em;">${profile ? profile.vsb_coins : 1000}</span></p>
+
+        <div style="display:flex; gap:10px; margin: 20px 0; flex-wrap: wrap;">
+            <div style="flex:1; min-width:100px; background:#f0f9f4; border:1px solid #0d8f4f; border-radius:10px; padding:12px; text-align:center;">
+                <div style="font-size:1.6em; font-weight:bold; color:#0d8f4f;">${wonBets}</div>
+                <div style="font-size:0.85em; color:#555;">Won</div>
+            </div>
+            <div style="flex:1; min-width:100px; background:#fdf0f0; border:1px solid #e63946; border-radius:10px; padding:12px; text-align:center;">
+                <div style="font-size:1.6em; font-weight:bold; color:#e63946;">${lostBets}</div>
+                <div style="font-size:0.85em; color:#555;">Lost</div>
+            </div>
+            <div style="flex:1; min-width:100px; background:#f4f4f4; border:1px solid #999; border-radius:10px; padding:12px; text-align:center;">
+                <div style="font-size:1.6em; font-weight:bold; color:#333;">${totalBets}</div>
+                <div style="font-size:0.85em; color:#555;">Total bets</div>
+            </div>
+            <div style="flex:1; min-width:100px; background:#fff8e6; border:1px solid #f5a623; border-radius:10px; padding:12px; text-align:center;">
+                <div style="font-size:1.6em; font-weight:bold; color:#f5a623;">${winRate}%</div>
+                <div style="font-size:0.85em; color:#555;">Win rate</div>
+            </div>
+        </div>
+
+        <button onclick="logout()" style="padding: 12px 24px; background: #ff4444; color: white; border: none; border-radius: 5px; cursor: pointer;">Logout</button>
+    `;
+
+    loadRecentBets(user.id);
+}
+
+    const { data: profile } = await supabaseClient
+        .from('profiles')
+        .select('*')
+        .eq('user_id', user.id)
+        .single();
+
+    const genderIcons = { male: '♂️', female: '♀️', other: '⚧️' };
+    const genderIcon = profile && profile.gender ? genderIcons[profile.gender] || '' : '';
+    const displayName = profile && profile.username ? profile.username : user.email.split('@')[0];
+
     container.innerHTML = `
         <div style="text-align:center; margin-bottom:15px;">${getAvatarHTML(displayName, 80)}</div>
         <p style="text-align:center;"><a href="/settings/">⚙️ Account Settings</a></p>
