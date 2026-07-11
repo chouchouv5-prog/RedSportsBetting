@@ -42,6 +42,10 @@ function mapMatch(m, competitionName, odds) {
     };
 }
 
+function isValidMatch(m) {
+    return m.homeTeam && m.homeTeam.name && m.awayTeam && m.awayTeam.name;
+}
+
 async function fetchCompetitionMatches(code, competitionName) {
     const odds = generateOdds();
     const url = `https://api.football-data.org/v4/competitions/${code}/matches`;
@@ -57,7 +61,7 @@ async function fetchCompetitionMatches(code, competitionName) {
 
     const data = await res.json();
     const matches = data.matches || [];
-    return matches.map(m => mapMatch(m, competitionName, odds));
+    return matches.filter(isValidMatch).map(m => mapMatch(m, competitionName, odds));
 }
 
 async function upsertMatches(matches) {
